@@ -52,10 +52,39 @@
   "gui.figura.name": "Namn: %d",
 
   "gui.figura.config.nametag": "NamnBricka",
+  "gui.figura.config.misc": "Diverse",
+  "gui.figura.config.dev": "Utvecklarinställningar",
 
+  
   "gui.figura.config.previewnametag": "Förhandsvisa NamnBricka",
   "gui.figura.config.tooltip.previewnametag": "Visar din NamnBricka på modellförhandsvisningskärmen",
 
-  "gui.figura.config.nametagmark": "Visa Figura-Märket",
-  "gui.figura.config.tooltip.nametagmark": "Lägger till Märket △ till NamnBrickan av spelare som använder Figura"
+  "gui.figura.config.nametagmark": "NamnBricka Figura-Märke",
+  "gui.figura.config.tooltip.nametagmark": "Lägger till Märket △ till NamnBrickan av spelare som använder Figura",
+  
+  "gui.figura.config.listmark": "Spelarlista Figura-Märke",
+  "gui.figura.config.tooltip.listmark": "Lägger till Märket △ på tabb-listan till spelare som använder Figura",
+
+  "gui.figura.config.chatmark": "Chatt Figura-Märke",
+  "gui.figura.config.tooltip.chatmark": "Lägger till Märket △ till chattnamnen av spelare som använder Figura",
+
+  "gui.figura.config.usenewnetwork": "Använd det nya nätverket",
+  "gui.figura.config.tooltip.usenewnetwork": "Växlar mellan att använda det gamla och det nya nätverket för online-modeller",
+
+  "gui.figura.config.uselocalserver": "Använd den lokala servern",
+  "gui.figura.config.tooltip.uselocalserver": "Växlar mellan att använda den lokala servern eller main-servern för online-modeller",
+
+  "gui.figura.config.buttonlocation": "Figura-knapp position",
+  "gui.figura.config.tooltip.buttonlocation": "Positionen där Figura-inställningsknappen bör vara",
+  "gui.figura.config.buttonlocation.topleft": "Topp-Vänster",
+  "gui.figura.config.buttonlocation.topright": "Topp-Höger",
+  "gui.figura.config.buttonlocation.bottomleft": "Botten-Vänster",
+  "gui.figura.config.buttonlocation.bottomright": "Botten-Höger",
+  "gui.figura.config.buttonlocation.icon": "Ikon",
+
+  "gui.figura.config.scriptlog": "Skriptlogg",
+  "gui.figura.config.tooltip.scriptlog": "Utmatningsplats för skriptfelsökningslogg",
+  "gui.figura.config.scriptlog.console_chat": "Konsoll/Chatt",
+  "gui.figura.config.scriptlog.console": "Konsoll",
+  "gui.figura.config.scriptlog.chat": "Chatt"
 }
