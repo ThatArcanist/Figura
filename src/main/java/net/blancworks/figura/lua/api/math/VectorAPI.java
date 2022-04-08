@@ -164,29 +164,21 @@ public class VectorAPI {
     }
 
     public static LuaVector toHSV(LuaVector rgb) {
-        float[] hsv = new float[3];
-        Color.RGBtoHSB((int)(rgb.x() * 255), (int)(rgb.y() * 255), (int)(rgb.z() * 255), hsv);
-        return new LuaVector(hsv);
+        Vec3f color = rgb.asV3f();
+        float[] hsb = Color.RGBtoHSB((int) (color.getX() * 255), (int) (color.getY() * 255), (int) (color.getZ() * 255), null);
+        return new LuaVector(hsb);
     }
 
     public static LuaVector toRGB(LuaVector hsv) {
-        int c = Color.HSBtoRGB(hsv.x(), hsv.y(), hsv.z());
-        int[] rgb = new int[3];
-        ColorUtils.split(c, rgb);
-        return new LuaVector(((float)rgb[0]) / 255, ((float)rgb[1]) / 255, ((float)rgb[2]) / 255);
+        return (LuaVector) LuaVector.of(ColorUtils.hsvToRGB(hsv.asV3f()));
     }
 
     public static LuaVector RGBfromInt(int rgb) {
-        int[] c = new int[3];
-        ColorUtils.split(rgb, c);
-        return new LuaVector(((float)c[0]) / 255, ((float)c[1]) / 255, ((float)c[2]) / 255);
+        return (LuaVector) LuaVector.of(ColorUtils.intToRGB(rgb));
     }
 
     public static int intFromRGB(LuaVector rgb) {
-        int c = (int) (rgb.x() * 255);
-        c = (c << 8) + (int) (rgb.y() * 255);
-        c = (c << 8) + (int) (rgb.z() * 255);
-        return c;
+        return ColorUtils.rgbToInt(rgb.asV3f());
     }
 
     public static LuaValue rotateWithQuaternion(LuaVector vector, LuaVector rotation) {

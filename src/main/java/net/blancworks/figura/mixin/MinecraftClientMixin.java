@@ -1,12 +1,11 @@
 package net.blancworks.figura.mixin;
 
-import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.gui.ActionWheel;
-import net.blancworks.figura.gui.PlayerPopup;
 import net.blancworks.figura.gui.NewActionWheel;
+import net.blancworks.figura.gui.PlayerPopup;
 import net.blancworks.figura.lua.api.RenderLayerAPI;
 import net.blancworks.figura.lua.api.keybind.FiguraKeybind;
 import net.blancworks.figura.lua.api.sound.FiguraSoundManager;
@@ -62,7 +61,7 @@ public class MinecraftClientMixin {
 
                 CustomModel model = data.model;
                 model.animRendered = 0;
-                model.animMaxRender = data.getTrustContainer().getTrust(TrustContainer.Trust.BB_ANIMATIONS);
+                model.animMaxRender = data.getTrustContainer().get(TrustContainer.Trust.BB_ANIMATIONS);
                 if (model.animMaxRender <= 0)
                     continue;
 
@@ -117,7 +116,7 @@ public class MinecraftClientMixin {
 
     @Inject(at = @At("RETURN"), method = "handleInputEvents")
     public void handleInputEvents(CallbackInfo ci) {
-        if (FiguraMod.PANIC_BUTTON.wasPressed()) {
+        if (Config.PANIC_BUTTON.keyBind.wasPressed()) {
             RenderLayerAPI.restoreDefaults();
             FiguraSoundManager.getChannel().stopAllSounds();
             AvatarData.currentRenderingData = null;
@@ -127,7 +126,7 @@ public class MinecraftClientMixin {
 
         if (AvatarDataManager.panic) return;
 
-        if (FiguraMod.ACTION_WHEEL_BUTTON.isPressed()) {
+        if (Config.ACTION_WHEEL_BUTTON.keyBind.isPressed()) {
             this.mouse.unlockCursor();
         } else if (ActionWheel.enabled || NewActionWheel.enabled) {
             if ((boolean) Config.ACTION_WHEEL_EXECUTE_ON_CLOSE.value) {
@@ -141,7 +140,7 @@ public class MinecraftClientMixin {
             this.mouse.lockCursor();
         }
 
-        if (FiguraMod.PLAYER_POPUP_BUTTON.isPressed()) {
+        if (Config.PLAYER_POPUP_BUTTON.keyBind.isPressed()) {
             if (PlayerPopup.data == null) {
                 Entity target = getTargetedEntity();
                 if (((PlayerListHudAccessorMixin) this.inGameHud.getPlayerListHud()).isVisible()) {

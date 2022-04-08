@@ -41,7 +41,7 @@ public abstract class MobEntityRendererMixin<T extends MobEntity, M extends Enti
         //Reset this here because... Execution order.
 
         if (mob instanceof PiglinEntityRenderer renderer) {
-            if (data != null && data.script != null && data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 1) {
+            if (data != null && data.script != null && data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 1) {
                 figura$applyPartCustomization(VanillaModelAPI.VANILLA_HEAD, renderer.getModel().head, entity);
                 figura$applyPartCustomization(VanillaModelAPI.VANILLA_TORSO, renderer.getModel().body, entity);
                 figura$applyPartCustomization(VanillaModelAPI.VANILLA_LEFT_ARM, renderer.getModel().leftArm, entity);

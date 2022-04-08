@@ -173,7 +173,7 @@ public class CustomModelPart {
             //get vertex consumer
             VertexConsumer consumer;
 
-            if (customLayer != null && data.getTrustContainer().getTrust(TrustContainer.Trust.CUSTOM_RENDER_LAYER) == 1) {
+            if (customLayer != null && data.getTrustContainer().get(TrustContainer.Trust.CUSTOM_RENDER_LAYER) == 1) {
                 consumer = vcp.getBuffer(customLayer);
                 layer = customLayer;
             } else if (layer instanceof FiguraRenderLayer) {

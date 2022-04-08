@@ -59,7 +59,7 @@ public class SoundAPI {
             set("registerCustomSound", new TwoArgFunction() {
                 @Override
                 public LuaValue call(LuaValue arg1, LuaValue arg2) {
-                    if (script.avatarData.getTrustContainer().getTrust(TrustContainer.Trust.CUSTOM_SOUNDS) == 0) return NIL;
+                    if (script.avatarData.getTrustContainer().get(TrustContainer.Trust.CUSTOM_SOUNDS) == 0) return NIL;
 
                     byte[] bytes;
                     if (arg2.istable()) {

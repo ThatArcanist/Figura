@@ -39,7 +39,7 @@ public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends Enti
     @Inject(at = @At("HEAD"), cancellable = true, method = "renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;Lnet/minecraft/util/Arm;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V")
     private void onRenderItem(LivingEntity entity, ItemStack stack, ModelTransformation.Mode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         AvatarData data = entity instanceof PlayerEntity ? AvatarDataManager.getDataForPlayer(entity.getUuid()) : AvatarDataManager.getDataForEntity(entity);
-        if (data == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
+        if (data == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
             return;
 
         try {
@@ -47,7 +47,7 @@ public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends Enti
                 VanillaModelPartCustomization originModification = arm == Arm.LEFT ? data.model.originModifications.get(ItemModelAPI.VANILLA_LEFT_HAND_ID) : data.model.originModifications.get(ItemModelAPI.VANILLA_RIGHT_HAND_ID);
 
                 if (originModification != null) {
-                    if (originModification.part == null || originModification.visible == null || data.getComplexity() > data.getTrustContainer().getTrust(TrustContainer.Trust.COMPLEXITY)) {
+                    if (originModification.part == null || originModification.visible == null || data.getComplexity() > data.getTrustContainer().get(TrustContainer.Trust.COMPLEXITY)) {
                         ci.cancel();
                         return;
                     }

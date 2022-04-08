@@ -30,7 +30,7 @@ public class PlayerHeldItemFeatureRendererMixin {
     @Inject(method = "renderSpyglass", at = @At(value = "HEAD"), cancellable = true)
     public void renderSpyglass(LivingEntity entity, ItemStack stack, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         AvatarData data = entity instanceof PlayerEntity ? AvatarDataManager.getDataForPlayer(entity.getUuid()) : AvatarDataManager.getDataForEntity(entity);
-        if (data == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
+        if (data == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
             return;
 
         boolean left = arm == Arm.LEFT;
@@ -39,7 +39,7 @@ public class PlayerHeldItemFeatureRendererMixin {
                 VanillaModelPartCustomization originModification = left ? data.model.originModifications.get(SpyglassModelAPI.VANILLA_LEFT_SPYGLASS_ID) : data.model.originModifications.get(SpyglassModelAPI.VANILLA_RIGHT_SPYGLASS_ID);
 
                 if (originModification != null) {
-                    if (originModification.part == null || originModification.visible == null || data.getComplexity() > data.getTrustContainer().getTrust(TrustContainer.Trust.COMPLEXITY)) {
+                    if (originModification.part == null || originModification.visible == null || data.getComplexity() > data.getTrustContainer().get(TrustContainer.Trust.COMPLEXITY)) {
                         ci.cancel();
                         return;
                     }

@@ -2,7 +2,7 @@ package net.blancworks.figura.mixin;
 
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.gui.FiguraGuiScreen;
+import net.blancworks.figura.gui.helpers.UIHelper;
 import net.blancworks.figura.trust.TrustContainer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -28,7 +28,7 @@ public abstract class EntityRenderDispatcherMixin {
     private final Predicate<Entity> MOUNT_DISABLED_PREDICATE = (entity -> {
         if (entity instanceof PlayerEntity player) {
             AvatarData data = AvatarDataManager.getDataForPlayer(player.getUuid());
-            if (data != null && data.script != null && data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 1) {
+            if (data != null && data.script != null && data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 1) {
                 this.renderShadows = data.script.renderMountShadow;
                 return !data.script.renderMount;
             }
@@ -55,13 +55,13 @@ public abstract class EntityRenderDispatcherMixin {
 
     @Inject(method = "renderFire", at = @At("HEAD"), cancellable = true)
     private void renderFire(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Entity entity, CallbackInfo ci) {
-        if (!FiguraGuiScreen.renderFireOverlay) {
+        if (UIHelper.forceNoFire) {
             ci.cancel();
             return;
         }
 
         AvatarData data = entity instanceof PlayerEntity ? AvatarDataManager.getDataForPlayer(entity.getUuid()) : AvatarDataManager.getDataForEntity(entity);
-        if (data == null || data.script == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0 || data.script.shouldRenderFire == null)
+        if (data == null || data.script == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0 || data.script.shouldRenderFire == null)
             return;
 
         if (!data.script.shouldRenderFire)

@@ -4,42 +4,36 @@ import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
 import net.blancworks.figura.avatar.EntityAvatarData;
 import net.blancworks.figura.avatar.LocalAvatarManager;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.config.ConfigManager;
-import net.blancworks.figura.config.ConfigManager.Config;
-import net.blancworks.figura.config.ConfigManager.ConfigKeyBind;
-import net.blancworks.figura.gui.FiguraToast;
+import net.blancworks.figura.gui.widgets.cards.FiguraResources;
 import net.blancworks.figura.lua.FiguraLuaManager;
 import net.blancworks.figura.lua.api.FiguraAPI;
 import net.blancworks.figura.lua.api.sound.FiguraSoundManager;
 import net.blancworks.figura.network.IFiguraNetwork;
 import net.blancworks.figura.network.NewFiguraNetworkManager;
-import net.blancworks.figura.trust.PlayerTrustManager;
+import net.blancworks.figura.trust.TrustManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.fabric.impl.client.keybinding.KeyBindingRegistryImpl;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,10 +61,6 @@ public class FiguraMod implements ClientModInitializer {
 
     public static final boolean IS_CHEESE = LocalDate.now().getDayOfMonth() == 1 && LocalDate.now().getMonthValue() == 4;
     public static NbtCompound cheese;
-
-    public static final ConfigKeyBind ACTION_WHEEL_BUTTON = new ConfigKeyBind("figura.config.action_wheel_button", GLFW.GLFW_KEY_B, ConfigManager.MOD_NAME, Config.ACTION_WHEEL_BUTTON);
-    public static final ConfigKeyBind PLAYER_POPUP_BUTTON = new ConfigKeyBind("figura.config.player_popup_button", GLFW.GLFW_KEY_R, ConfigManager.MOD_NAME, Config.PLAYER_POPUP_BUTTON);
-    public static final ConfigKeyBind PANIC_BUTTON = new ConfigKeyBind("figura.config.panic_button", GLFW.GLFW_KEY_UNKNOWN, ConfigManager.MOD_NAME, Config.PANIC_BUTTON);
 
     public static int ticksElapsed;
 
@@ -108,19 +98,13 @@ public class FiguraMod implements ClientModInitializer {
         });
 
         //initialise managers
-        ConfigManager.initialize();
+        ConfigManager.init();
         FiguraLuaManager.initialize();
-        PlayerTrustManager.init();
+        TrustManager.init();
         LocalAvatarManager.init();
 
-        //set keybinds based on config
-        ACTION_WHEEL_BUTTON.setBoundKey(InputUtil.Type.KEYSYM.createFromCode((int) Config.ACTION_WHEEL_BUTTON.value));
-        PLAYER_POPUP_BUTTON.setBoundKey(InputUtil.Type.KEYSYM.createFromCode((int) Config.PLAYER_POPUP_BUTTON.value));
-        PANIC_BUTTON.setBoundKey(InputUtil.Type.KEYSYM.createFromCode((int) Config.PANIC_BUTTON.value));
-
-        KeyBindingRegistryImpl.registerKeyBinding(ACTION_WHEEL_BUTTON);
-        KeyBindingRegistryImpl.registerKeyBinding(PLAYER_POPUP_BUTTON);
-        KeyBindingRegistryImpl.registerKeyBinding(PANIC_BUTTON);
+        //Register the card backgrounds loader
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new FiguraResources());
 
         //Set up network
         newNetworkManager = new NewFiguraNetworkManager();
@@ -227,14 +211,6 @@ public class FiguraMod implements ClientModInitializer {
 
         if (onFinished != null)
             onFinished.run();
-    }
-
-    public static void sendToast(Object title, Object message) {
-        Text text = title instanceof Text t ? t : new TranslatableText(title.toString());
-        Text text2 = message instanceof Text m ? m : new TranslatableText(message.toString());
-
-        MinecraftClient.getInstance().getToastManager().clear();
-        MinecraftClient.getInstance().getToastManager().add(new FiguraToast(text, text2));
     }
 
     public static void getLatestModVersion() {

@@ -17,7 +17,7 @@ public class InGameOverlayRendererMixin {
     @Inject(at = @At("HEAD"), method = "renderFireOverlay", cancellable = true)
     private static void renderFireOverlay(MinecraftClient client, MatrixStack matrices, CallbackInfo ci) {
         AvatarData data = AvatarDataManager.localPlayer;
-        if (AvatarDataManager.panic || data == null || data.script == null || data.script.shouldRenderFire == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
+        if (AvatarDataManager.panic || data == null || data.script == null || data.script.shouldRenderFire == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
             return;
 
         if (!data.script.shouldRenderFire)

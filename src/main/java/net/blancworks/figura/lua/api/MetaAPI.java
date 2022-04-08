@@ -20,84 +20,84 @@ public class MetaAPI {
             set("getInitLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.INIT_INST));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.INIT_INST));
                 }
             });
 
             set("getTickLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.TICK_INST));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.TICK_INST));
                 }
             });
 
             set("getRenderLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.RENDER_INST));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.RENDER_INST));
                 }
             });
 
             set("getCanModifyVanilla", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.VANILLA_MODEL_EDIT) == 1);
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.VANILLA_MODEL_EDIT) == 1);
                 }
             });
 
             set("getComplexityLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.COMPLEXITY));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.COMPLEXITY));
                 }
             });
 
             set("getParticleLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.PARTICLES));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.PARTICLES));
                 }
             });
 
             set("getSoundLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.SOUNDS));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.SOUNDS));
                 }
             });
 
             set("getAnimationLimit", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.BB_ANIMATIONS));
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.BB_ANIMATIONS));
                 }
             });
 
             set("getDoesRenderOffscreen", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.OFFSCREEN_RENDERING) == 1);
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.OFFSCREEN_RENDERING) == 1);
                 }
             });
 
             set("getCanModifyNameplate", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.NAMEPLATE_EDIT) == 1);
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.NAMEPLATE_EDIT) == 1);
                 }
             });
 
             set("getCanHaveCustomRenderLayer", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.CUSTOM_RENDER_LAYER) == 1);
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.CUSTOM_RENDER_LAYER) == 1);
                 }
             });
 
             set("getCanHaveCustomSounds", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(script.avatarData.getTrustContainer().getTrust(Trust.CUSTOM_SOUNDS) == 1);
+                    return LuaValue.valueOf(script.avatarData.getTrustContainer().get(Trust.CUSTOM_SOUNDS) == 1);
                 }
             });
 

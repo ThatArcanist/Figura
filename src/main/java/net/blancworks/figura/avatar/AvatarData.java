@@ -7,8 +7,8 @@ import net.blancworks.figura.models.CustomModel;
 import net.blancworks.figura.models.CustomModelPart;
 import net.blancworks.figura.models.FiguraTexture;
 import net.blancworks.figura.network.NewFiguraNetworkManager;
-import net.blancworks.figura.trust.PlayerTrustManager;
 import net.blancworks.figura.trust.TrustContainer;
+import net.blancworks.figura.trust.TrustManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -330,7 +330,7 @@ public class AvatarData {
     }
 
     public TrustContainer getTrustContainer() {
-        return PlayerTrustManager.getContainer(getTrustIdentifier());
+        return TrustManager.get(getTrustIdentifier());
     }
 
     //cache this avatar data

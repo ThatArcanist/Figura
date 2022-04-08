@@ -2,6 +2,7 @@ package net.blancworks.figura.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import net.blancworks.figura.gui.screens.ConfigScreen;
 
 public class ModMenuConfig implements ModMenuApi {
     @Override

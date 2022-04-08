@@ -3,7 +3,7 @@ package net.blancworks.figura.mixin;
 import com.mojang.authlib.GameProfile;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.trust.TrustContainer;
 import net.minecraft.block.SkullBlock;
 import net.minecraft.client.render.RenderLayer;
@@ -27,7 +27,7 @@ public abstract class SkullBlockEntityRendererMixin {
 
     @Inject(method = "renderSkull", at = @At(value = "HEAD"), cancellable = true)
     private static void renderSkull(Direction direction, float yaw, float animationProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, SkullBlockEntityModel model, RenderLayer renderLayer, CallbackInfo ci) {
-        if (!(boolean) Config.CUSTOM_PLAYER_HEADS.value || data == null || (data.script != null && !data.script.renderPlayerHead) || data.model == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
+        if (!(boolean) Config.CUSTOM_PLAYER_HEADS.value || data == null || (data.script != null && !data.script.renderPlayerHead) || data.model == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
             return;
 
         matrices.push();

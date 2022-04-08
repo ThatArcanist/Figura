@@ -1,7 +1,7 @@
 package net.blancworks.figura.mixin;
 
 import net.blancworks.figura.FiguraMod;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.minecraft.client.resource.SplashTextResourceSupplier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,15 +34,14 @@ public class SplashTextResourceSupplierMixin {
                     if (day == 1) cir.setReturnValue(bday + "Lily!");
                 }
                 case 3 -> {
-                    if (day > 20 && day < 26) {
-                        int diff = 26 - day;
+                    if (day > 18 && day < 24) {
+                        int diff = 24 - day;
                         cir.setReturnValue(diff + " day" + (diff > 1 ? "s!" : "!"));
                     } else {
                         switch (day) {
                             case 5 -> cir.setReturnValue(bday + "devnull!");
                             case 7 -> cir.setReturnValue(bday + "omoflop!");
-                            case 11 -> cir.setReturnValue(bday + "Zandra!");
-                            case 26 -> cir.setReturnValue(bday + "Figura!");
+                            case 24 -> cir.setReturnValue(bday + "Figura!");
                         }
                     }
                 }

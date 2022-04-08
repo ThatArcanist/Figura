@@ -48,7 +48,7 @@ public class ArmorFeatureRendererMixin<T extends LivingEntity, M extends BipedEn
         if (partID != null) {
             AvatarData data = livingEntity instanceof PlayerEntity ? AvatarDataManager.getDataForPlayer(livingEntity.getUuid()) : AvatarDataManager.getDataForEntity(livingEntity);
 
-            if (data != null && data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 1) {
+            if (data != null && data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 1) {
                 figura$applyPartCustomization(partID, bipedEntityModel.head, data);
                 figura$applyPartCustomization(partID, bipedEntityModel.hat, data);
                 figura$applyPartCustomization(partID, bipedEntityModel.body, data);

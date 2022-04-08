@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.lua.api.actionwheel.ActionWheelCustomization;
 import net.blancworks.figura.models.FiguraTexture;
 import net.blancworks.figura.utils.MathUtils;

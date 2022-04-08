@@ -42,7 +42,7 @@ public class ShoulderParrotFeatureRendererMixin<T extends PlayerEntity> extends 
     @Inject(at = @At("HEAD"), method = "renderShoulderParrot", cancellable = true)
     public void onRenderShoulder(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T player, float limbAngle, float limbDistance, float headYaw, float headPitch, boolean leftShoulder, CallbackInfo ci) {
         AvatarData data = AvatarDataManager.getDataForPlayer(player.getUuid());
-        if (data == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
+        if (data == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0)
             return;
 
         try {
@@ -50,7 +50,7 @@ public class ShoulderParrotFeatureRendererMixin<T extends PlayerEntity> extends 
                 VanillaModelPartCustomization originModification = leftShoulder ? data.model.originModifications.get(ParrotModelAPI.VANILLA_LEFT_PARROT_ID) : data.model.originModifications.get(ParrotModelAPI.VANILLA_RIGHT_PARROT_ID);
 
                 if (originModification != null) {
-                    if (originModification.part == null || originModification.visible == null || data.getComplexity() > data.getTrustContainer().getTrust(TrustContainer.Trust.COMPLEXITY)) {
+                    if (originModification.part == null || originModification.visible == null || data.getComplexity() > data.getTrustContainer().get(TrustContainer.Trust.COMPLEXITY)) {
                         ci.cancel();
                         return;
                     }

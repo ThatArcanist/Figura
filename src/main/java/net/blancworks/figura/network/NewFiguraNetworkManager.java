@@ -2,10 +2,10 @@ package net.blancworks.figura.network;
 
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
-import net.blancworks.figura.*;
+import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarDataManager;
 import net.blancworks.figura.avatar.LocalAvatarData;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.network.messages.MessageRegistry;
 import net.blancworks.figura.network.messages.avatar.AvatarUploadMessageSender;
@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 
@@ -284,14 +283,14 @@ public class NewFiguraNetworkManager implements IFiguraNetwork {
     public String authServerURL() {
         if ((boolean) Config.USE_LOCAL_SERVER.value)
             return "localhost";
-        return "figuranew.blancworks.org";
+        return (String) Config.BACKEND_PATH.value;
     }
 
     //Main server for distributing files URL
     public String mainServerURL() {
         if ((boolean) Config.USE_LOCAL_SERVER.value)
             return "http://localhost:6050";
-        return "https://figuranew.blancworks.org";
+        return "https://" + Config.BACKEND_PATH.value;
     }
 
     private static boolean localLastCheck = false;
@@ -317,7 +316,7 @@ public class NewFiguraNetworkManager implements IFiguraNetwork {
                 socketFactory.setVerifyHostname(false);
             }
 
-            socketFactory.setServerName("figuranew.blancworks.org");
+            socketFactory.setServerName((String) Config.BACKEND_PATH.value);
         }
 
         if (currWebSocket == null || !currWebSocket.isOpen()) {

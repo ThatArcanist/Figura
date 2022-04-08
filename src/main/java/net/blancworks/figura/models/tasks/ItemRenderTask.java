@@ -31,7 +31,7 @@ public class ItemRenderTask extends RenderTask {
         this.transform(matrices);
         matrices.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(180));
 
-        boolean renderLayer = data.getTrustContainer().getTrust(TrustContainer.Trust.CUSTOM_RENDER_LAYER) == 1;
+        boolean renderLayer = data.getTrustContainer().get(TrustContainer.Trust.CUSTOM_RENDER_LAYER) == 1;
         if (renderLayer) RenderTask.renderLayerOverride(vcp, customLayer);
         MinecraftClient client = MinecraftClient.getInstance();
         client.getItemRenderer().renderItem(stack, mode, emissive ? LightmapTextureManager.MAX_LIGHT_COORDINATE : light, overlay, matrices, vcp, 0);

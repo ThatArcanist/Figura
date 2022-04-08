@@ -2,7 +2,7 @@ package net.blancworks.figura.models;
 
 import net.blancworks.figura.assets.FiguraAsset;
 import net.blancworks.figura.avatar.AvatarData;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.lua.api.model.VanillaModelAPI;
 import net.blancworks.figura.lua.api.model.VanillaModelPartCustomization;
 import net.blancworks.figura.models.animations.Animation;
@@ -81,7 +81,7 @@ public class CustomModel extends FiguraAsset {
             return 0;
 
         TrustContainer tc = owner.getTrustContainer();
-        return tc != null ? tc.getTrust(TrustContainer.Trust.COMPLEXITY) : 0;
+        return tc != null ? tc.get(TrustContainer.Trust.COMPLEXITY) : 0;
     }
 
     public void render(EntityModel<?> entity_model, MatrixStack matrices, MatrixStack transformStack, VertexConsumerProvider vcp, int light, int overlay, float alpha) {

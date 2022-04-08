@@ -1,7 +1,7 @@
 package net.blancworks.figura.mixin;
 
-import net.blancworks.figura.config.ConfigManager.Config;
-import net.blancworks.figura.gui.FiguraGuiScreen;
+import net.blancworks.figura.config.Config;
+import net.blancworks.figura.gui.helpers.UIHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -23,8 +23,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
     @Inject(method = "hasLabel(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
     public void hasLabel(T livingEntity, CallbackInfoReturnable<Boolean> cir) {
-        if (FiguraGuiScreen.showOwnNametag) {
-            cir.setReturnValue(true);
+        if (UIHelper.forceNameplate) {
+            cir.setReturnValue((boolean) Config.PREVIEW_NAMEPLATE.value);
         }
         else if (!MinecraftClient.isHudEnabled()) {
             cir.setReturnValue(false);

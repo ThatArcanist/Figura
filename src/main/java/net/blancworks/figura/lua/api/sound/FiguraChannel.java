@@ -87,7 +87,7 @@ public class FiguraChannel extends Channel {
     }
 
     public void playCustomSound(CustomScript script, String soundName, Vec3d pos, float volume, float pitch) {
-        if (script.avatarData.getTrustContainer().getTrust(TrustContainer.Trust.CUSTOM_SOUNDS) == 0 || script.soundSpawnCount < 1 || pitch <= 0f || volume <= 0f) return;
+        if (script.avatarData.getTrustContainer().get(TrustContainer.Trust.CUSTOM_SOUNDS) == 0 || script.soundSpawnCount < 1 || pitch <= 0f || volume <= 0f) return;
         script.soundSpawnCount--;
 
         FiguraSound sound = script.customSounds.get(soundName);

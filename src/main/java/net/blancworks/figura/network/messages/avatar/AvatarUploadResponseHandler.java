@@ -2,6 +2,7 @@ package net.blancworks.figura.network.messages.avatar;
 
 import com.google.common.io.LittleEndianDataInputStream;
 import net.blancworks.figura.FiguraMod;
+import net.blancworks.figura.gui.FiguraToast;
 import net.blancworks.figura.network.NewFiguraNetworkManager;
 import net.blancworks.figura.network.messages.MessageHandler;
 import net.blancworks.figura.network.messages.pubsub.ChannelAvatarUpdateMessageSender;
@@ -47,7 +48,7 @@ public class AvatarUploadResponseHandler extends MessageHandler {
         UUID id = readUUID(stream);
 
         FiguraMod.LOGGER.info("Uploaded avatar sucessfully, UUID is " + id);
-        FiguraMod.sendToast("figura.toast.upload.success.title", "");
+        FiguraToast.sendToast("figura.toast.upload.success.title", "");
 
         new UserSetAvatarMessageSender(id).sendMessage(NewFiguraNetworkManager.currWebSocket);
         new ChannelAvatarUpdateMessageSender(id).sendMessage(NewFiguraNetworkManager.currWebSocket);
@@ -55,16 +56,16 @@ public class AvatarUploadResponseHandler extends MessageHandler {
 
     public void handleTooManyAvatars() {
         FiguraMod.LOGGER.error("Failed to upload avatar : User Has Too Many Avatars");
-        FiguraMod.sendToast("figura.toast.upload.error.title", "figura.toast.upload.error.many");
+        FiguraToast.sendToast("figura.toast.upload.error.title", "figura.toast.upload.error.many", FiguraToast.ToastType.ERROR);
     }
 
     public void handleEmptyAvatar() {
         FiguraMod.LOGGER.error("Failed to upload avatar : Attempted Empty Avatar Upload");
-        FiguraMod.sendToast("figura.toast.upload.error.title", "figura.toast.upload.error.empty");
+        FiguraToast.sendToast("figura.toast.upload.error.title", "figura.toast.upload.error.empty", FiguraToast.ToastType.ERROR);
     }
 
     public void handleNotEnoughSpace() {
         FiguraMod.LOGGER.error("Failed to upload avatar : Not Enough Space On Server");
-        FiguraMod.sendToast("figura.toast.upload.error.title", "figura.toast.upload.error.space");
+        FiguraToast.sendToast("figura.toast.upload.error.title", "figura.toast.upload.error.space", FiguraToast.ToastType.ERROR);
     }
 }

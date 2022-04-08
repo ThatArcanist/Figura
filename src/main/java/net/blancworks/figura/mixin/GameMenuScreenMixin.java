@@ -2,10 +2,9 @@ package net.blancworks.figura.mixin;
 
 import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarDataManager;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.config.ConfigManager;
-import net.blancworks.figura.config.ConfigManager.Config;
-import net.blancworks.figura.gui.FiguraGuiScreen;
-import net.blancworks.figura.gui.NewFiguraGuiScreen;
+import net.blancworks.figura.gui.screens.WardrobeScreen;
 import net.minecraft.client.gui.screen.GameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -21,17 +20,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameMenuScreen.class)
 public class GameMenuScreenMixin extends Screen {
 
-    private FiguraGuiScreen figura$screen;
-    private NewFiguraGuiScreen figura$newScreen;
-
     protected GameMenuScreenMixin(Text title) {
         super(title);
     }
 
     @Inject(at = @At("HEAD"), method = "initWidgets", require = 1)
     void initWidgets(CallbackInfo ci) {
-        if (this.figura$screen == null)
-            this.figura$screen = new FiguraGuiScreen(this);
 
         int x = 5;
         int y = 5;
@@ -54,19 +48,18 @@ public class GameMenuScreenMixin extends Screen {
             }
         }
 
+        WardrobeScreen screen = new WardrobeScreen(this);
+
         if (config != 4) {
             if (ConfigManager.modmenuButton())
                 y += 12;
 
             addDrawableChild(new ButtonWidget(x, y, 64, 20, new LiteralText("Figura"),
-                    btn -> this.client.setScreen(figura$screen)));
+                    btn -> this.client.setScreen(screen)));
         }
         else {
             Identifier iconTexture = new Identifier("figura", "textures/gui/config_icon" + (AvatarDataManager.panic || FiguraMod.latestVersionStatus < 0 ? "_notif" : "") + ".png");
-            addDrawableChild(new TexturedButtonWidget(x, y, 20, 20, 0, 0, 20, iconTexture, 20, 40, btn -> this.client.setScreen(figura$screen)));
+            addDrawableChild(new TexturedButtonWidget(x, y, 20, 20, 0, 0, 20, iconTexture, 20, 40, btn -> this.client.setScreen(screen)));
         }
-
-        if (this.figura$newScreen == null)
-            this.figura$newScreen = new NewFiguraGuiScreen(this);
     }
 }

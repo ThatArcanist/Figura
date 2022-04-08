@@ -1,6 +1,6 @@
 package net.blancworks.figura.lua.api.actionwheel;
 
-import net.blancworks.figura.FiguraMod;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.gui.ActionWheel;
 import net.blancworks.figura.lua.CustomScript;
 import net.minecraft.util.Identifier;
@@ -78,7 +78,7 @@ public class ActionWheelAPI {
             set("isOpen", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(FiguraMod.ACTION_WHEEL_BUTTON.isPressed() && ActionWheel.enabled);
+                    return LuaValue.valueOf(Config.ACTION_WHEEL_BUTTON.keyBind.isPressed() && ActionWheel.enabled);
                 }
             });
 

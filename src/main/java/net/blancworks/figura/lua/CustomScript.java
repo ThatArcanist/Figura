@@ -4,10 +4,10 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.blancworks.figura.FiguraMod;
+import net.blancworks.figura.assets.FiguraAsset;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.assets.FiguraAsset;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.lua.api.RenderLayerAPI;
 import net.blancworks.figura.lua.api.actionwheel.ActionWheelCustomization;
 import net.blancworks.figura.lua.api.camera.CameraCustomization;
@@ -521,7 +521,7 @@ public class CustomScript extends FiguraAsset {
     //Sets the instruction limit of the next function we'll call, and resets the bytecode count to 0
     //Uses the permission at permissionID to set it.
     public void setInstructionLimitPermission(TrustContainer.Trust permissionID, int subtract) {
-        int count = avatarData.getTrustContainer().getTrust(permissionID) - subtract;
+        int count = avatarData.getTrustContainer().get(permissionID) - subtract;
         setInstructionLimit(count);
     }
 
@@ -538,8 +538,8 @@ public class CustomScript extends FiguraAsset {
     //Called whenever the global tick event happens
     public void tick() {
         if (avatarData != null) {
-            float particles = avatarData.getTrustContainer().getTrust(TrustContainer.Trust.PARTICLES);
-            float sounds = avatarData.getTrustContainer().getTrust(TrustContainer.Trust.SOUNDS);
+            float particles = avatarData.getTrustContainer().get(TrustContainer.Trust.PARTICLES);
+            float sounds = avatarData.getTrustContainer().get(TrustContainer.Trust.SOUNDS);
             particleSpawnCount = MathHelper.clamp(particleSpawnCount + (1 / 20f * particles), 0, particles);
             soundSpawnCount = MathHelper.clamp(soundSpawnCount + (1 / 20f * sounds), 0, sounds);
         }

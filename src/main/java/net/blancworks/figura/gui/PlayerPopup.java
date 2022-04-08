@@ -4,13 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.config.ConfigManager;
-import net.blancworks.figura.gui.widgets.PlayerListWidget;
-import net.blancworks.figura.lua.api.nameplate.NamePlateAPI;
-import net.blancworks.figura.trust.PlayerTrustManager;
+import net.blancworks.figura.gui.helpers.UIHelper;
+import net.blancworks.figura.gui.screens.TrustScreen;
+import net.blancworks.figura.lua.api.nameplate.NamePlateCustomization;
 import net.blancworks.figura.trust.TrustContainer;
+import net.blancworks.figura.trust.TrustManager;
+import net.blancworks.figura.utils.ColorUtils;
 import net.blancworks.figura.utils.MathUtils;
-import net.blancworks.figura.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
@@ -51,7 +51,7 @@ public class PlayerPopup extends DrawableHelper {
     private static final Text TRUST_TEXT = new LiteralText("").append(new LiteralText("! ").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))).append(new TranslatableText("figura.playerpopup.trustissue"));
     private static final Text SCRIPT_TEXT = new LiteralText("").append(new LiteralText("▲ ").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))).append(new TranslatableText("figura.playerpopup.scriptissue"));
 
-    private static final FiguraTrustScreen TRUST_SCREEN = new FiguraTrustScreen(null);
+    private static final TrustScreen TRUST_SCREEN = new TrustScreen(null);
 
     public static void renderMini(MatrixStack matrices) {
         if (data == null || enabled)
@@ -66,7 +66,7 @@ public class PlayerPopup extends DrawableHelper {
         //background
         drawTexture(matrices, 0, 0, 0f, 0f, length, 13, length, 48);
 
-        int color = ConfigManager.ACCENT_COLOR.apply(Style.EMPTY).getColor().getRgb();
+        int color = ColorUtils.Colors.FRAN_PINK.hex;
         RenderSystem.setShaderColor(((color >> 16) & 0xFF) / 255f, ((color >>  8) & 0xFF) / 255f, (color & 0xFF) / 255f, 1f);
 
         //foreground
@@ -120,7 +120,7 @@ public class PlayerPopup extends DrawableHelper {
 
             matrices.push();
             matrices.scale(0.5f, 0.5f, 0.5f);
-            TextUtils.renderOutlineText(textRenderer, toRender, -textRenderer.getWidth(toRender) / 2f, -70, color, 0x202020, matrices);
+            UIHelper.renderOutlineText(matrices, textRenderer, toRender, -textRenderer.getWidth(toRender) / 2f, -70, color, 0x202020);
             matrices.pop();
         } else {
             offset = 0f;
@@ -128,9 +128,9 @@ public class PlayerPopup extends DrawableHelper {
 
         //title
         Text title = BUTTONS.get(index);
-        TextUtils.renderOutlineText(textRenderer, title, -textRenderer.getWidth(title) / 2f, -40 + offset, 0xFFFFFF, 0x202020, matrices);
+        UIHelper.renderOutlineText(matrices, textRenderer, title, -textRenderer.getWidth(title) / 2f, -40 + offset, 0xFFFFFF, 0x202020);
 
-        int color = ConfigManager.ACCENT_COLOR.apply(Style.EMPTY).getColor().getRgb();
+        int color = ColorUtils.Colors.FRAN_PINK.hex;
         int length = BUTTONS.size() * 18;
 
         //background
@@ -148,10 +148,10 @@ public class PlayerPopup extends DrawableHelper {
 
         //playername
         MutableText name = data.name.shallowCopy().formatted(Formatting.BLACK);
-        Text badges = NamePlateAPI.getBadges(data);
+        Text badges = NamePlateCustomization.getBadges(data);
         if (badges != null) name.append(badges);
 
-        Text trust = new TranslatableText("figura.trust." + data.getTrustContainer().getParent().getPath()).formatted(Formatting.BLACK);
+        Text trust = new TranslatableText("figura.trust." + data.getTrustContainer().getParentID().getPath()).formatted(Formatting.BLACK);
 
         matrices.scale(0.5f, 0.5f, 0.5f);
         matrices.translate(0f, 0f, -1f);
@@ -182,33 +182,28 @@ public class PlayerPopup extends DrawableHelper {
         if (data != null) {
             data.hasPopup = false;
             MutableText playerName = new LiteralText("").append(data.name);
-            Text badges = NamePlateAPI.getBadges(data);
+            Text badges = NamePlateCustomization.getBadges(data);
             if (badges != null) playerName.append(badges);
 
             switch (index) {
                 case 1 -> {
                     if (data.hasAvatar() && data.isAvatarLoaded()) {
                         AvatarDataManager.clearPlayer(data.entityId);
-                        FiguraMod.sendToast(playerName, "figura.toast.avatar.reload.title");
+                        FiguraToast.sendToast(playerName, "figura.toast.avatar.reload.title");
                     }
                 }
                 case 2 -> {
                     TrustContainer tc = data.getTrustContainer();
-                    if (PlayerTrustManager.increaseTrust(tc))
-                        FiguraMod.sendToast(playerName, new TranslatableText("figura.toast.avatar.trust.title").append(new TranslatableText("figura.trust." + tc.getParent().getPath())));
+                    if (TrustManager.increaseTrust(tc))
+                        FiguraToast.sendToast(playerName, new TranslatableText("figura.toast.avatar.trust.title").append(new TranslatableText("figura.trust." + tc.getParentID().getPath())));
                 }
                 case 3 -> {
                     TrustContainer tc = data.getTrustContainer();
-                    if (PlayerTrustManager.decreaseTrust(tc))
-                        FiguraMod.sendToast(playerName, new TranslatableText("figura.toast.avatar.trust.title").append(new TranslatableText("figura.trust." + tc.getParent().getPath())));
+                    if (TrustManager.decreaseTrust(tc))
+                        FiguraToast.sendToast(playerName, new TranslatableText("figura.toast.avatar.trust.title").append(new TranslatableText("figura.trust." + tc.getParentID().getPath())));
                 }
                 case 4 -> {
                     MinecraftClient.getInstance().setScreen(TRUST_SCREEN);
-                    TRUST_SCREEN.searchBox.setText(data.name.getString());
-
-                    PlayerListWidget.PlayerListWidgetEntry entry = TRUST_SCREEN.playerList.getEntry(data.entityId);
-                    if (entry != null)
-                        TRUST_SCREEN.playerList.select(entry);
                 }
             }
         }

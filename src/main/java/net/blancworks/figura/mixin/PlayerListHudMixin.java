@@ -4,11 +4,12 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.config.ConfigManager.Config;
+import net.blancworks.figura.config.Config;
 import net.blancworks.figura.gui.PlayerPopup;
 import net.blancworks.figura.lua.api.nameplate.NamePlateAPI;
 import net.blancworks.figura.lua.api.nameplate.NamePlateCustomization;
 import net.blancworks.figura.trust.TrustContainer;
+import net.blancworks.figura.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.PlayerListHud;
@@ -22,8 +23,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,35 +45,32 @@ public class PlayerListHudMixin {
 
     @Inject(at = @At("RETURN"), method = "getPlayerName", cancellable = true)
     private void getPlayerName(PlayerListEntry entry, CallbackInfoReturnable<Text> cir) {
+        if (!(boolean) Config.PLAYERLIST_MODIFICATIONS.value)
+            return;
+
+        //get data
+        UUID uuid = entry.getProfile().getId();
+        AvatarData data = AvatarDataManager.getDataForPlayer(uuid);
+        if (data == null)
+            return;
+
+        //apply customization
         Text text = cir.getReturnValue();
+        Text replacement;
 
-        if ((boolean) Config.PLAYERLIST_MODIFICATIONS.value) {
-            UUID uuid = entry.getProfile().getId();
-            String playerName = entry.getProfile().getName();
-
-            AvatarData currentData = AvatarDataManager.getDataForPlayer(uuid);
-            if (currentData != null && !playerName.equals("")) {
-                NamePlateCustomization nameplateData = currentData.script == null ? null : currentData.script.nameplateCustomizations.get(NamePlateAPI.TABLIST);
-
-                try {
-                    if (text instanceof TranslatableText) {
-                        Object[] args = ((TranslatableText) text).getArgs();
-
-                        for (Object arg : args) {
-                            if (arg instanceof TranslatableText || !(arg instanceof Text))
-                                continue;
-
-                            if (NamePlateAPI.applyFormattingRecursive((LiteralText) arg, playerName, nameplateData, currentData))
-                                break;
-                        }
-                    } else if (text instanceof LiteralText) {
-                        NamePlateAPI.applyFormattingRecursive((LiteralText) text, playerName, nameplateData, currentData);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        NamePlateCustomization custom = data.script == null ? null : data.script.nameplateCustomizations.get(NamePlateAPI.TABLIST);
+        if (custom != null && custom.text != null && data.getTrustContainer().get(TrustContainer.Trust.NAMEPLATE_EDIT) == 1) {
+            replacement = NamePlateCustomization.applyNameplateCustomizations(custom.text);
+        } else {
+            replacement = new LiteralText(entry.getProfile().getName());
         }
+
+        if ((boolean) Config.BADGES.value) {
+            Text badges = NamePlateCustomization.getBadges(data);
+            if (badges != null) ((MutableText) replacement).append(badges);
+        }
+
+        text = TextUtils.replaceInText(text, "\\b" + entry.getProfile().getName() + "\\b", replacement);
 
         cir.setReturnValue(text);
     }
@@ -99,7 +97,7 @@ public class PlayerListHudMixin {
     private void render(MatrixStack matrices, int x, int y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
         AvatarData data = playerEntity == null ? null : AvatarDataManager.getDataForPlayer(playerEntity.getUuid());
 
-        if (!(boolean) Config.CUSTOM_PLAYER_HEADS.value || data == null || data.model == null || data.getTrustContainer().getTrust(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0) {
+        if (!(boolean) Config.CUSTOM_PLAYER_HEADS.value || data == null || data.model == null || data.getTrustContainer().get(TrustContainer.Trust.VANILLA_MODEL_EDIT) == 0) {
             DrawableHelper.drawTexture(matrices, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
             return;
         }
