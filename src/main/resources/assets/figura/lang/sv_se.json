@@ -146,7 +146,7 @@
   "figura.config.release_channel.2": "Full-Version",
   "figura.config.release_channel.3": "Inga Uppdateringar",
 
-  "figura.config.custom_player_heads": "Custom Spelar Huvuden",
+  "figura.config.custom_player_heads": "Custom Spelarhuvuden",
   "figura.config.custom_player_heads.tooltip": "Växlar visningen av avatar på spelarhuvuden och i tabb-listan",
 
   "figura.config.fix_hands": "Lås Förstapersons Händer",
@@ -196,6 +196,9 @@
 
   "figura.config.pings_log_location": "Ping-Loggning",
   "figura.config.pings_log_location.tooltip": "Förändra loggning av mottagna ping",
+
+  "figura.config.backend_path": "Administrationsdels IP-adress",
+  "figura.config.backend_path.tooltip": "IP-adressen som används för uppkoppling mot Figuars servrar (INKLUDERA EJ \"https://\")",
 
 
   "figura.toast.upload.success.title": "Avatar Uppladdad!",
