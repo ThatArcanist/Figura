@@ -11,7 +11,6 @@ import net.minecraft.particle.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Vibration;
 import net.minecraft.world.World;
 import net.minecraft.world.event.BlockPositionSource;
 import org.luaj.vm2.LuaTable;
@@ -76,6 +75,14 @@ public class ParticleAPI {
                             BlockState state = BlockStateAPI.checkOrCreateBlockState(arg3);
                             particle = new BlockStateParticleEffect(ParticleTypes.BLOCK_MARKER, state);
                         }
+                        case "minecraft:shriek" -> {
+                            int delay = arg3.checkint();
+                            particle = new ShriekParticleEffect(delay);
+                        }
+                        case "minecraft:sculk_charge" -> {
+                            float roll = arg3.checknumber().tofloat();
+                            particle = new SculkChargeParticleEffect(roll);
+                        }
                         //4 argos
                         case "minecraft:dust_color_transition" -> {
                             LuaVector fromColor = LuaVector.checkOrNew(arg3);
@@ -83,12 +90,11 @@ public class ParticleAPI {
                             particle = new DustColorTransitionParticleEffect(fromColor.asV3f(), toColor.asV3f(), fromColor.w());
                         }
                         case "minecraft:vibration" -> {
-                            LuaVector start = LuaVector.checkOrNew(arg3);
-                            LuaVector end = LuaVector.checkOrNew(arg4);
-                            BlockPos startPos = new BlockPos(start.asV3d());
-                            BlockPositionSource endPos = new BlockPositionSource(new BlockPos(end.asV3d()));
+                            LuaVector dist = LuaVector.checkOrNew(arg3);
+                            int speed = arg4.checkint();
 
-                            particle = new VibrationParticleEffect(new Vibration(startPos, endPos, (int) start.w()));
+                            BlockPositionSource distance = new BlockPositionSource(new BlockPos(dist.asV3d()));
+                            particle = new VibrationParticleEffect(distance, speed);
                         }
                         //default particle type
                         default -> {
