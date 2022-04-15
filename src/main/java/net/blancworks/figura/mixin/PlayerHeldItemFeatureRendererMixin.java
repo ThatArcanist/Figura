@@ -1,14 +1,14 @@
 package net.blancworks.figura.mixin;
 
+import net.blancworks.figura.access.MatrixStackAccess;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.access.MatrixStackAccess;
 import net.blancworks.figura.lua.api.model.SpyglassModelAPI;
 import net.blancworks.figura.lua.api.model.VanillaModelPartCustomization;
 import net.blancworks.figura.trust.TrustContainer;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.PlayerHeldItemFeatureRenderer;
+import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -16,7 +16,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.Vec3f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -26,6 +28,8 @@ public class PlayerHeldItemFeatureRendererMixin {
 
     public VanillaModelPartCustomization figura$customization;
     private int figura$pushedMatrixCount = 0;
+
+    @Shadow @Final private HeldItemRenderer field_38904;
 
     @Inject(method = "renderSpyglass", at = @At(value = "HEAD"), cancellable = true)
     public void renderSpyglass(LivingEntity entity, ItemStack stack, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
@@ -58,7 +62,7 @@ public class PlayerHeldItemFeatureRendererMixin {
                         freshStack.translate(0f, 0f, 4.5f / 16f);
                         freshStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180f));
                         freshStack.scale(0.625f, -0.625f, -0.625f);
-                        MinecraftClient.getInstance().getHeldItemRenderer().renderItem(entity, stack, ModelTransformation.Mode.HEAD, left, freshStack, vertexConsumers, light);
+                        this.field_38904.renderItem(entity, stack, ModelTransformation.Mode.HEAD, left, freshStack, vertexConsumers, light);
                         freshStack.pop();
 
                         ci.cancel();

@@ -1,18 +1,18 @@
 package net.blancworks.figura.mixin;
 
+import net.blancworks.figura.access.MatrixStackAccess;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.access.MatrixStackAccess;
 import net.blancworks.figura.lua.api.model.ItemModelAPI;
 import net.blancworks.figura.lua.api.model.VanillaModelPartCustomization;
 import net.blancworks.figura.trust.TrustContainer;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.ModelWithArms;
+import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.Vec3f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,6 +33,8 @@ public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends Enti
     public HeldItemFeatureRendererMixin(FeatureRendererContext<T, M> context) {
         super(context);
     }
+
+    @Shadow @Final private HeldItemRenderer field_38901;
 
     public VanillaModelPartCustomization figura$customization;
     private int figura$pushedMatrixCount = 0;
@@ -109,17 +112,16 @@ public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends Enti
         figura$pushedMatrixCount = 0;
     }
 
-    @Shadow
-    @Override
-    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {}
-
     private void figura$CustomOriginPointRender(LivingEntity entity, ItemStack stack, ModelTransformation.Mode transformationMode, Arm arm, MatrixStack.Entry modified, VertexConsumerProvider vertexConsumers, int light) {
         if (!stack.isEmpty()) {
             MatrixStack freshStack = new MatrixStack();
             MatrixStackAccess access = (MatrixStackAccess) freshStack;
             access.pushEntry(modified);
             boolean bl = arm == Arm.LEFT;
-            MinecraftClient.getInstance().getHeldItemRenderer().renderItem(entity, stack, transformationMode, bl, freshStack, vertexConsumers, light);
+            this.field_38901.renderItem(entity, stack, transformationMode, bl, freshStack, vertexConsumers, light);
         }
     }
+
+    @Shadow
+    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {}
 }
