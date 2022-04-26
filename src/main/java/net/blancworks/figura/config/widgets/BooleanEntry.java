@@ -8,9 +8,9 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +31,7 @@ public class BooleanEntry extends ConfigListWidget.Entry {
         this.toggle = new ButtonWidget(0, 0, 80, 20, this.title, (button) -> config.configValue = !(boolean) config.configValue);
 
         //reset button
-        this.reset = new ButtonWidget(0, 0, 40, 20, new TranslatableText("controls.reset"), (button) -> config.configValue = config.defaultValue);
+        this.reset = new ButtonWidget(0, 0, 40, 20, MutableText.of(new TranslatableTextContent("controls.reset")), (button) -> config.configValue = config.defaultValue);
     }
 
     @Override
@@ -50,11 +50,11 @@ public class BooleanEntry extends ConfigListWidget.Entry {
         //toggle button
         this.toggle.x = x + 175;
         this.toggle.y = y;
-        this.toggle.setMessage(new TranslatableText("gui." + ((boolean) this.config.configValue ? "yes" : "no")));
+        this.toggle.setMessage(MutableText.of(new TranslatableTextContent("gui." + ((boolean) this.config.configValue ? "yes" : "no"))));
 
         //if setting is changed
         if ((boolean) this.config.configValue != this.initValue)
-            this.toggle.setMessage(new LiteralText("").styled(ConfigManager.ACCENT_COLOR).append(this.toggle.getMessage()));
+            this.toggle.setMessage(Text.empty().styled(ConfigManager.ACCENT_COLOR).append(this.toggle.getMessage()));
 
         this.toggle.render(matrices, mouseX, mouseY, tickDelta);
     }

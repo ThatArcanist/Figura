@@ -5,8 +5,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,9 +19,7 @@ public class NewFiguraGuiScreen extends Screen {
 
     //scores
     private static final HashMap<String, Integer> SCORES = new HashMap<>() {{
-        put("zandra", 0);
         put("fran", 1); //petty
-        put("omo", 0);
         put("lily", 0);
         put("devnull", 0);
     }};
@@ -29,32 +28,24 @@ public class NewFiguraGuiScreen extends Screen {
     private final ArrayList<ButtonWidget> buttons = new ArrayList<>() {{
         String prefix = "Pet ";
 
-        add(new ButtonWidget(0, 0, 160, 20, new LiteralText(prefix + "Zandra"), button -> {
-            SCORES.put("zandra", SCORES.get("zandra") + 1);
-            shuffle();
-        }));
-        add(new ButtonWidget(0, 0, 160, 20, new LiteralText(prefix + "Fran"), button -> {
+        add(new ButtonWidget(0, 0, 160, 20, Text.literal(prefix + "Fran"), button -> {
             SCORES.put("fran", SCORES.get("fran") + 1);
             shuffle();
             FiguraMod.sendToast("IP Grabbed!", "37.26.243.59"); //fr.an.cie.[l]ly (T9)
         }));
-        add(new ButtonWidget(0, 0, 160, 20, new LiteralText(prefix + "omoflop"), button -> {
-            SCORES.put("omo", SCORES.get("omo") + 1);
-            shuffle();
-        }));
-        add(new ButtonWidget(0, 0, 160, 20, new LiteralText(prefix + "Lily"), button -> {
+        add(new ButtonWidget(0, 0, 160, 20, Text.literal(prefix + "Lily"), button -> {
             SCORES.put("lily", SCORES.get("lily") + 1);
             shuffle();
         }));
-        add(new ButtonWidget(0, 0, 160, 20, new LiteralText(prefix + "devnull"), button -> {
+        add(new ButtonWidget(0, 0, 160, 20, Text.literal(prefix + "devnull"), button -> {
             SCORES.put("devnull", SCORES.get("devnull") + 1);
             shuffle();
         }));
-        add(new ButtonWidget(0, 0, 160, 20, new LiteralText(prefix).append(new TranslatableText("figura.gui.button.back")), (buttonWidgetx) -> MinecraftClient.getInstance().setScreen(parentScreen)));
+        add(new ButtonWidget(0, 0, 160, 20, Text.literal(prefix).append(MutableText.of(new TranslatableTextContent("figura.gui.button.back"))), (buttonWidgetx) -> MinecraftClient.getInstance().setScreen(parentScreen)));
     }};
 
     public NewFiguraGuiScreen(Screen parentScreen) {
-        super(new TranslatableText("figura.gui.menu.title"));
+        super(MutableText.of(new TranslatableTextContent("figura.gui.menu.title")));
         this.parentScreen = parentScreen;
     }
 
@@ -82,7 +73,7 @@ public class NewFiguraGuiScreen extends Screen {
 
         int y = -10;
         for (Map.Entry<String, Integer> entry : SCORES.entrySet()) {
-            this.textRenderer.draw(matrices, new LiteralText(entry.getKey() + ": " + entry.getValue()), 2, y += 15, 0xFFFFFF);
+            this.textRenderer.draw(matrices, Text.literal(entry.getKey() + ": " + entry.getValue()), 2, y += 15, 0xFFFFFF);
         }
     }
 

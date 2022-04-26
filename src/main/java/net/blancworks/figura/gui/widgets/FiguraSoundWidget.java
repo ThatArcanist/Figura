@@ -12,7 +12,6 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -53,7 +52,7 @@ public class FiguraSoundWidget extends ElementListWidget<FiguraSoundWidget.Entry
                 df.setRoundingMode(RoundingMode.HALF_UP);
                 float size = Float.parseFloat(df.format(sound.sample().length / 1000.0f));
 
-                this.addEntry(new SoundEntry(new LiteralText(name).append(new LiteralText(" (" + size + "kb)").formatted(Formatting.DARK_GRAY)), sound));
+                this.addEntry(new SoundEntry(Text.literal(name).append(Text.literal(" (" + size + "kb)").formatted(Formatting.DARK_GRAY)), sound));
             });
         }
     }

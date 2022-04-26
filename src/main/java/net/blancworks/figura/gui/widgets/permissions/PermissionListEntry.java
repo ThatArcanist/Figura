@@ -6,8 +6,9 @@ import net.blancworks.figura.gui.widgets.CustomListWidget;
 import net.blancworks.figura.gui.widgets.PermissionListWidget;
 import net.blancworks.figura.trust.TrustContainer;
 import net.minecraft.client.gui.Element;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 
 import java.util.ArrayList;
 
@@ -88,9 +89,9 @@ public class PermissionListEntry extends CustomListEntry {
         PermissionListWidget realList = (PermissionListWidget) list;
 
         if(realList.isDifferent(getEntrySetting()))
-            return new TranslatableText("figura.trust." + getEntrySetting().id).append("*").styled(FiguraMod.ACCENT_COLOR);
+            return MutableText.of(new TranslatableTextContent("figura.trust." + getEntrySetting().id)).append("*").styled(FiguraMod.ACCENT_COLOR);
 
-        return new TranslatableText("figura.trust." + getEntrySetting().id);
+        return MutableText.of(new TranslatableTextContent("figura.trust." + getEntrySetting().id));
     }
 
     @Override

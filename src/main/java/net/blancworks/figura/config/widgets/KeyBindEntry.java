@@ -9,9 +9,9 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class KeyBindEntry extends ConfigListWidget.Entry {
         this.toggle = new ButtonWidget(0, 0, 80, 20, this.title, (button) -> parent.focusedBinding = binding);
 
         //reset button
-        this.reset = new ButtonWidget(0, 0, 40, 20, new TranslatableText("controls.reset"), (button) -> {
+        this.reset = new ButtonWidget(0, 0, 40, 20, MutableText.of(new TranslatableTextContent("controls.reset")), (button) -> {
             binding.setBoundKey(binding.getDefaultKey());
             KeyBinding.updateKeysByCode();
         });
@@ -61,7 +61,7 @@ public class KeyBindEntry extends ConfigListWidget.Entry {
         this.toggle.setMessage(this.binding.getBoundKeyLocalizedText());
 
         if (parent.focusedBinding == this.binding) {
-            this.toggle.setMessage(new LiteralText("> ").styled(ConfigManager.ACCENT_COLOR).append(this.toggle.getMessage()).append(" <"));
+            this.toggle.setMessage(Text.literal("> ").styled(ConfigManager.ACCENT_COLOR).append(this.toggle.getMessage()).append(" <"));
         }
         else if (!this.binding.isUnbound()) {
             for (KeyBinding key : MinecraftClient.getInstance().options.allKeys) {

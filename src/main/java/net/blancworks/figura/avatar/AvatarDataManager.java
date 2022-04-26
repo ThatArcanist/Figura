@@ -10,7 +10,7 @@ import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.registry.Registry;
 
 import java.io.DataInputStream;
@@ -115,11 +115,11 @@ public final class AvatarDataManager {
         }
 
         if (getData != null) {
-            LiteralText playerName = new LiteralText("");
+            Text playerName = Text.empty();
             if (client.getNetworkHandler() != null) {
                 PlayerListEntry playerEntry = client.getNetworkHandler().getPlayerListEntry(id);
                 if (playerEntry != null && playerEntry.getProfile() != null)
-                    playerName = new LiteralText(playerEntry.getProfile().getName());
+                    playerName = Text.literal(playerEntry.getProfile().getName());
 
                 getData.playerListEntry = playerEntry;
             }

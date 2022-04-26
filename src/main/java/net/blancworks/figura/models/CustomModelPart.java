@@ -416,7 +416,7 @@ public class CustomModelPart {
             boxSize = 1 / 48f;
         }
         else {
-            color = FiguraMod.ACE_BLUE;
+            color = FiguraMod.MAYA_BLUE;
             boxSize = 1 / 24f;
         }
 

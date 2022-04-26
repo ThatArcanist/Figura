@@ -4,9 +4,9 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.blancworks.figura.FiguraMod;
+import net.blancworks.figura.assets.FiguraAsset;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
-import net.blancworks.figura.assets.FiguraAsset;
 import net.blancworks.figura.config.ConfigManager.Config;
 import net.blancworks.figura.lua.api.RenderLayerAPI;
 import net.blancworks.figura.lua.api.actionwheel.ActionWheelCustomization;
@@ -27,7 +27,7 @@ import net.blancworks.figura.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -134,8 +134,8 @@ public class CustomScript extends FiguraAsset {
 
     public static final UnaryOperator<Style> LUA_COLOR = (s) -> s.withColor(0x5555FF);
     public static final UnaryOperator<Style> PING_COLOR = (s) -> s.withColor(0xDD1133);
-    public static final Text LOG_PREFIX = new LiteralText("").formatted(Formatting.ITALIC).append(new LiteralText("[lua] ").styled(LUA_COLOR));
-    public static final Text PING_PREFIX = new LiteralText("").formatted(Formatting.ITALIC).append(new LiteralText("[ping] ").styled(PING_COLOR));
+    public static final Text LOG_PREFIX = Text.empty().formatted(Formatting.ITALIC).append(MutableText.of(new LiteralTextContent("[lua] ")).styled(LUA_COLOR));
+    public static final Text PING_PREFIX = Text.empty().formatted(Formatting.ITALIC).append(MutableText.of(new LiteralTextContent("[ping] ")).styled(PING_COLOR));
 
     //Custom Rendering
     public static final int maxShaders = 16;
@@ -248,7 +248,7 @@ public class CustomScript extends FiguraAsset {
                         if (logOthers) message.append(data.name.copy().formatted(Formatting.DARK_RED, Formatting.BOLD)).append(" ");
 
                         //error
-                        message.append(new LiteralText(">> ").styled(LUA_COLOR)).append(error).formatted(Formatting.RED);
+                        message.append(Text.literal(">> ").styled(LUA_COLOR)).append(error).formatted(Formatting.RED);
 
                         sendChatMessage(message);
                     }
@@ -413,13 +413,13 @@ public class CustomScript extends FiguraAsset {
                     if (avatarData == AvatarDataManager.localPlayer || (boolean) Config.LOG_OTHERS_SCRIPT.value) {
                         MutableText message = LOG_PREFIX.shallowCopy();
                         if ((boolean) Config.LOG_OTHERS_SCRIPT.value) message.append(avatarData.name.copy()).append(" ");
-                        message.append(new LiteralText(">> ").styled(LUA_COLOR));
+                        message.append(Text.literal(">> ").styled(LUA_COLOR));
 
                         Text log;
                         if (arg instanceof LuaVector logText)
                             log = logText.toJsonText(LUA_COLOR, FiguraMod.ACCENT_COLOR);
                         else if (arg2.isnil() || !arg2.checkboolean())
-                            log = new LiteralText(arg.toString());
+                            log = Text.literal(arg.toString());
                         else
                             log = TextUtils.tryParseJson(arg.toString());
 
@@ -455,7 +455,7 @@ public class CustomScript extends FiguraAsset {
                     if (avatarData == AvatarDataManager.localPlayer || (boolean) Config.LOG_OTHERS_SCRIPT.value) {
                         MutableText message = LOG_PREFIX.shallowCopy();
                         if ((boolean) Config.LOG_OTHERS_SCRIPT.value) message.append(avatarData.name.copy()).append(" ");
-                        message.append(new LiteralText(">> ").styled(LUA_COLOR));
+                        message.append(Text.literal(">> ").styled(LUA_COLOR));
                         message.append(tableToText(table, deep, LUA_COLOR, FiguraMod.ACCENT_COLOR, 1, ""));
 
                         int config = (int) Config.SCRIPT_LOG_LOCATION.value;
@@ -786,17 +786,17 @@ public class CustomScript extends FiguraAsset {
         if (logOthers) message.append(avatarData.name.copy()).append(" ");
 
         //header
-        message.append(new LiteralText(">> ").styled(LUA_COLOR));
+        message.append(Text.literal(">> ").styled(LUA_COLOR));
         sendChatMessage(message);
 
         //non-local warning
         if (avatarData == AvatarDataManager.localPlayer && !avatarData.isLocalAvatar)
-            sendChatMessage(new LiteralText("non-local avatar script!\n").formatted(Formatting.RED, Formatting.UNDERLINE));
+            sendChatMessage(Text.literal("non-local avatar script!\n").formatted(Formatting.RED, Formatting.UNDERLINE));
 
         //error
         for (String part : messageParts) {
             if (!part.trim().equals("[Java]: in ?"))
-                sendChatMessage(new LiteralText(part).formatted(Formatting.RED));
+                sendChatMessage(Text.literal(part).formatted(Formatting.RED));
         }
 
         //script path
@@ -827,8 +827,8 @@ public class CustomScript extends FiguraAsset {
             }
         } catch (Exception ignored) {}
 
-        sendChatMessage(new LiteralText("script:").formatted(Formatting.RED));
-        sendChatMessage(new LiteralText("   " + location).formatted(Formatting.RED));
+        sendChatMessage(Text.literal("script:").formatted(Formatting.RED));
+        sendChatMessage(Text.literal("   " + location).formatted(Formatting.RED));
 
         error.printStackTrace();
     }
@@ -836,30 +836,30 @@ public class CustomScript extends FiguraAsset {
     public static MutableText tableToText(LuaTable table, boolean deep, UnaryOperator<Style> keyColor, UnaryOperator<Style> valColor, int depth, String depthString) {
         String spacing = "  ";
         depthString = spacing.substring(2) + depthString;
-        MutableText back = new LiteralText("{\n").formatted(Formatting.ITALIC);
+        MutableText back = Text.literal("{\n").formatted(Formatting.ITALIC);
 
         for (LuaValue key : table.keys()) {
             LuaValue value = table.get(key);
 
-            MutableText valString = new LiteralText("");
-            valString.append(new LiteralText(depthString + spacing + "\"").setStyle(Style.EMPTY.withItalic(false)));
-            valString.append(new LiteralText(key.toString()).styled(keyColor)).append("\" : ");
+            MutableText valString = Text.empty();
+            valString.append(Text.literal(depthString + spacing + "\"").setStyle(Style.EMPTY.withItalic(false)));
+            valString.append(Text.literal(key.toString()).styled(keyColor)).append("\" : ");
 
             if (value.istable() && deep) {
                 valString.append(tableToText(value.checktable(), true, keyColor, valColor, depth + 1, spacing + depthString));
             } else {
-                valString.append(new LiteralText(value.toString()).styled(valColor)).append(",\n");
+                valString.append(Text.literal(value.toString()).styled(valColor)).append(",\n");
             }
 
             back.append(valString);
         }
 
-        back.append(new LiteralText(depthString + "},\n"));
+        back.append(Text.literal(depthString + "},\n"));
         return back;
     }
 
     public static void logPing(LuaPing p, int config, Text pingOwner) {
-        Text name = new LiteralText(p.name);
+        Text name = Text.literal(p.name);
         MutableText arg;
 
         if (p.args instanceof LuaVector vec)
@@ -867,14 +867,14 @@ public class CustomScript extends FiguraAsset {
         else if (p.args instanceof LuaTable tbl)
             arg = tableToText(tbl, true, PING_COLOR, FiguraMod.ACCENT_COLOR, 1, "");
         else
-            arg = new LiteralText(p.args.toString()).styled(FiguraMod.ACCENT_COLOR);
+            arg = Text.literal(p.args.toString()).styled(FiguraMod.ACCENT_COLOR);
 
         MutableText message = PING_PREFIX.shallowCopy();
         message.append(pingOwner).append(" ");
-        message.append(new LiteralText(">> ").styled(PING_COLOR));
+        message.append(Text.literal(">> ").styled(PING_COLOR));
 
         if (p.size != null)
-            message.append(new LiteralText("(" + p.size + "b) ").styled(PING_COLOR));
+            message.append(Text.literal("(" + p.size + "b) ").styled(PING_COLOR));
 
         message.append(name).append(" : ").append(arg);
 

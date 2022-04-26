@@ -9,10 +9,8 @@ import net.blancworks.figura.avatar.AvatarDataManager;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.*;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
@@ -50,8 +48,7 @@ public final class ConfigManager {
         PLAYERLIST_MODIFICATIONS(true),
         BADGES(true),
         BADGE_AS_ICONS(true) {{
-            this.tooltip = new TranslatableText("figura.config.badge_as_icons.tooltip",
-                    new LiteralText("△").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)));
+            this.tooltip = MutableText.of(new TranslatableTextContent("figura.config.badge_as_icons.tooltip", Text.literal("△").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))));
         }},
 
         Misc,
@@ -60,9 +57,9 @@ public final class ConfigManager {
         SCRIPT_LOG_LOCATION(0, 3) {{
             String path = "figura.config.log_location.";
             this.enumList = List.of(
-                    new TranslatableText(path + "1"),
-                    new TranslatableText(path + "2"),
-                    new TranslatableText(path + "3")
+                    MutableText.of(new TranslatableTextContent(path + "1")),
+                    MutableText.of(new TranslatableTextContent(path + "2")),
+                    MutableText.of(new TranslatableTextContent(path + "3"))
             );
         }},
         PLAYER_POPUP_BUTTON(GLFW.GLFW_KEY_R, FiguraMod.PLAYER_POPUP_BUTTON),
@@ -84,7 +81,7 @@ public final class ConfigManager {
         ACTION_WHEEL_EXECUTE_ON_CLOSE(true),
         //NEW_ACTION_WHEEL(false),
 
-        Dev {{this.name = new TranslatableText("figura.config.dev").formatted(Formatting.RED);}},
+        Dev {{this.name = MutableText.of(new TranslatableTextContent("figura.config.dev")).formatted(Formatting.RED);}},
 
         USE_LOCAL_SERVER(false),
         FORMAT_SCRIPT_ON_UPLOAD(true) {
@@ -98,9 +95,9 @@ public final class ConfigManager {
         LOG_OTHERS_SCRIPT(false),
         RENDER_DEBUG_PARTS_PIVOT(true) {{
             String tooltip = "figura.config.render_debug_parts_pivot.tooltip";
-            this.tooltip = new TranslatableText(tooltip,
-                    new TranslatableText(tooltip + ".cubes").setStyle(Style.EMPTY.withColor(0xff72b7)),
-                    new TranslatableText(tooltip + ".groups").setStyle(Style.EMPTY.withColor(0xaff2ff)));
+            this.tooltip = MutableText.of(new TranslatableTextContent(tooltip,
+                    MutableText.of(new TranslatableTextContent(tooltip + ".cubes")).setStyle(Style.EMPTY.withColor(0xFF72B7)),
+                    MutableText.of(new TranslatableTextContent(tooltip + ".groups")).setStyle(Style.EMPTY.withColor(0x0CE0CE))));
         }},
         RENDER_OWN_NAMEPLATE(false),
         MODEL_FOLDER_PATH("", InputType.FOLDER_PATH),
@@ -108,10 +105,10 @@ public final class ConfigManager {
         PINGS_LOG_LOCATION(3, 4) {{
             String path = "figura.config.log_location.";
             this.enumList = List.of(
-                    new TranslatableText(path + "1"),
-                    new TranslatableText(path + "2"),
-                    new TranslatableText(path + "3"),
-                    new TranslatableText(path + "4")
+                    MutableText.of(new TranslatableTextContent(path + "1")),
+                    MutableText.of(new TranslatableTextContent(path + "2")),
+                    MutableText.of(new TranslatableTextContent(path + "3")),
+                    MutableText.of(new TranslatableTextContent(path + "4"))
             );
         }},
         BACKEND_PATH("figuranew.blancworks.org", InputType.ANY);
@@ -161,14 +158,14 @@ public final class ConfigManager {
 
             //generate names
             String name = MOD_NAME + ".config." + this.name().toLowerCase();
-            this.name = new TranslatableText(name);
-            this.tooltip = new TranslatableText(name + ".tooltip");
+            this.name = MutableText.of(new TranslatableTextContent(name));
+            this.tooltip = MutableText.of(new TranslatableTextContent(name + ".tooltip"));
 
             //generate enum list
             if (length != null) {
                 List<Text> enumList = new ArrayList<>();
                 for (int i = 1; i <= length; i++)
-                    enumList.add(new TranslatableText(name + "." + i));
+                    enumList.add(MutableText.of(new TranslatableTextContent(name + "." + i)));
                 this.enumList = enumList;
             }
         }

@@ -2,7 +2,6 @@ package net.blancworks.figura.lua.api.math;
 
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.*;
@@ -445,13 +444,6 @@ public class LuaVector extends LuaValue implements Iterable<Float> {
     }
     
     public double _length() {
-        // We can't cache the length, what if someone edits the vector????
-        // Leave it up to users to cache it.
-        // -Zandra
-        
-        // Caches the vector's length upon first request, to conserve performance on repeated length tests on the same vector
-        // -Foundation
-        
         return Math.sqrt(_lengthSqr());
     }
 
@@ -555,13 +547,13 @@ public class LuaVector extends LuaValue implements Iterable<Float> {
     }
 
     public Text toJsonText(UnaryOperator<Style> keyColor, UnaryOperator<Style> valColor) {
-        return new LiteralText("").append("vec: {")
-                .append(new LiteralText("\n  x").styled(keyColor)).append(" = ").append(new LiteralText(String.valueOf(x())).styled(valColor))
-                .append(new LiteralText(",\n  y").styled(keyColor)).append(" = ").append(new LiteralText(String.valueOf(y())).styled(valColor))
-                .append(new LiteralText(",\n  z").styled(keyColor)).append(" = ").append(new LiteralText(String.valueOf(z())).styled(valColor))
-                .append(new LiteralText(",\n  w").styled(keyColor)).append(" = ").append(new LiteralText(String.valueOf(w())).styled(valColor))
-                .append(new LiteralText(",\n  t").styled(keyColor)).append(" = ").append(new LiteralText(String.valueOf(t())).styled(valColor))
-                .append(new LiteralText(",\n  h").styled(keyColor)).append(" = ").append(new LiteralText(String.valueOf(h())).styled(valColor))
+        return Text.empty().append("vec: {")
+                .append(Text.literal("\n  x").styled(keyColor)).append(" = ").append(Text.literal(String.valueOf(x())).styled(valColor))
+                .append(Text.literal(",\n  y").styled(keyColor)).append(" = ").append(Text.literal(String.valueOf(y())).styled(valColor))
+                .append(Text.literal(",\n  z").styled(keyColor)).append(" = ").append(Text.literal(String.valueOf(z())).styled(valColor))
+                .append(Text.literal(",\n  w").styled(keyColor)).append(" = ").append(Text.literal(String.valueOf(w())).styled(valColor))
+                .append(Text.literal(",\n  t").styled(keyColor)).append(" = ").append(Text.literal(String.valueOf(t())).styled(valColor))
+                .append(Text.literal(",\n  h").styled(keyColor)).append(" = ").append(Text.literal(String.valueOf(h())).styled(valColor))
                 .append("\n}");
     }
 }

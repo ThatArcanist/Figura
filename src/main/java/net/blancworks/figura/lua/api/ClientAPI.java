@@ -278,7 +278,7 @@ public class ClientAPI {
             set("getTitle", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(((InGameHudAccess) client.inGameHud).getTitle().asString());
+                    return LuaValue.valueOf(((InGameHudAccess) client.inGameHud).getTitle().getString());
                 }
             });
 
@@ -293,14 +293,14 @@ public class ClientAPI {
             set("getSubtitle", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(((InGameHudAccess) client.inGameHud).getSubtitle().asString());
+                    return LuaValue.valueOf(((InGameHudAccess) client.inGameHud).getSubtitle().getString());
                 }
             });
 
             set("getActionbar", new ZeroArgFunction() {
                 @Override
                 public LuaValue call() {
-                    return LuaValue.valueOf(((InGameHudAccess) client.inGameHud).getOverlayMessage().asString());
+                    return LuaValue.valueOf(((InGameHudAccess) client.inGameHud).getOverlayMessage().getString());
                 }
             });
 

@@ -2,6 +2,7 @@ package net.blancworks.figura.gui;
 
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
+import net.blancworks.figura.config.ConfigManager;
 import net.blancworks.figura.gui.widgets.CustomListWidgetState;
 import net.blancworks.figura.gui.widgets.CustomTextFieldWidget;
 import net.blancworks.figura.gui.widgets.PermissionListWidget;
@@ -17,10 +18,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -65,7 +65,7 @@ public class FiguraTrustScreen extends Screen {
     public boolean altPressed = false;
 
     protected FiguraTrustScreen(Screen parentScreen) {
-        super(new TranslatableText("figura.gui.trustmenu.title"));
+        super(MutableText.of(new TranslatableTextContent("figura.gui.trustmenu.title")));
         this.parentScreen = parentScreen;
     }
 
@@ -83,7 +83,7 @@ public class FiguraTrustScreen extends Screen {
 
         int searchBoxWidth = paneWidth - 5;
         searchBoxX = 7;
-        this.searchBox = new CustomTextFieldWidget(this.textRenderer, searchBoxX, 22, searchBoxWidth, 20, this.searchBox, new TranslatableText("figura.gui.button.search").formatted(Formatting.ITALIC));
+        this.searchBox = new CustomTextFieldWidget(this.textRenderer, searchBoxX, 22, searchBoxWidth, 20, this.searchBox, MutableText.of(new TranslatableTextContent("figura.gui.button.search")).formatted(Formatting.ITALIC));
         this.searchBox.setChangedListener((string_1) -> this.playerList.filter(string_1, false));
         this.playerList = new PlayerListWidget(this.client, paneWidth, this.height, paneY + 19, this.height - 36, 20, this.searchBox, this.playerList, this, playerListState);
         this.playerList.setLeftPos(5);
@@ -104,29 +104,29 @@ public class FiguraTrustScreen extends Screen {
         this.addSelectableChild(this.searchBox);
         this.setInitialFocus(this.searchBox);
 
-        this.addDrawableChild(new ButtonWidget(this.width - width - 5, this.height - 20 - 5, width, 20, new TranslatableText("figura.gui.button.back"), (buttonWidgetx) -> {
+        this.addDrawableChild(new ButtonWidget(this.width - width - 5, this.height - 20 - 5, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.back")), (buttonWidgetx) -> {
 
             PlayerTrustManager.saveToDisk();
 
             this.client.setScreen(parentScreen);
         }));
 
-        this.addDrawableChild(new ButtonWidget(this.width - width - 10 - width, this.height - 20 - 5, width, 20, new TranslatableText("figura.gui.button.help"), (buttonWidgetx) -> this.client.setScreen(new ConfirmChatLinkScreen((bl) -> {
+        this.addDrawableChild(new ButtonWidget(this.width - width - 10 - width, this.height - 20 - 5, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.help")), (buttonWidgetx) -> this.client.setScreen(new ConfirmChatLinkScreen((bl) -> {
             //Open the trust menu from the Figura Wiki
             if (bl)
                 Util.getOperatingSystem().open("https://github.com/Blancworks/Figura/wiki/Trust-Menu");
             this.client.setScreen(this);
         }, "https://github.com/Blancworks/Figura/wiki/Trust-Menu", true))));
 
-        this.addDrawableChild(clearCacheButton = new ButtonWidget(5, this.height - 20 - 5, 140, 20, new TranslatableText("figura.gui.button.clearall"), (buttonWidgetx) -> AvatarDataManager.clearCache()));
+        this.addDrawableChild(clearCacheButton = new ButtonWidget(5, this.height - 20 - 5, 140, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.clearall")), (buttonWidgetx) -> AvatarDataManager.clearCache()));
 
-        this.addDrawableChild(new ButtonWidget(this.width - 140 - 5, 15, 140, 20, new TranslatableText("figura.gui.button.reloadavatar"), (btx) -> {
+        this.addDrawableChild(new ButtonWidget(this.width - 140 - 5, 15, 140, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.reloadavatar")), (btx) -> {
             if (playerListState.selected instanceof PlayerListEntry entry) {
                 AvatarDataManager.clearPlayer(entry.getProfile().getId());
             }
         }));
 
-        resetPermissionButton = new ButtonWidget(this.width - 140 - 5, 40, 140, 20, new TranslatableText("figura.gui.button.resetperm"), (btx) -> {
+        resetPermissionButton = new ButtonWidget(this.width - 140 - 5, 40, 140, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.resetperm")), (btx) -> {
             try {
                 TrustContainer tc = permissionList.getCurrentContainer();
 
@@ -144,7 +144,7 @@ public class FiguraTrustScreen extends Screen {
             }
         });
 
-        resetAllPermissionsButton = new ButtonWidget(this.width - 140 - 5, 40, 140, 20, new TranslatableText("figura.gui.button.resetallperm").formatted(Formatting.RED), (btx) -> {
+        resetAllPermissionsButton = new ButtonWidget(this.width - 140 - 5, 40, 140, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.resetallperm")).formatted(Formatting.RED), (btx) -> {
             try {
                 //for all entries, reset all perms
                 playerList.children().forEach(customListEntry -> {
@@ -161,10 +161,10 @@ public class FiguraTrustScreen extends Screen {
         this.addDrawableChild(resetPermissionButton);
         this.addDrawableChild(resetAllPermissionsButton);
 
-        this.uuidBox = new CustomTextFieldWidget(this.textRenderer, this.width - 290, 15, 138, 18, this.uuidBox, new LiteralText("Name/UUID").formatted(Formatting.ITALIC));
+        this.uuidBox = new CustomTextFieldWidget(this.textRenderer, this.width - 290, 15, 138, 18, this.uuidBox, Text.literal("Name/UUID").formatted(Formatting.ITALIC));
         this.uuidBox.setMaxLength(36);
 
-        setAvatarButton = new ButtonWidget(this.width - 290, 40, 140, 20, new TranslatableText("set avatar"), (btx) -> {
+        setAvatarButton = new ButtonWidget(this.width - 290, 40, 140, 20, MutableText.of(new TranslatableTextContent("set avatar")), (btx) -> {
             try {
                 com.mojang.authlib.GameProfile gameProfile;
                 try {
@@ -214,18 +214,20 @@ public class FiguraTrustScreen extends Screen {
             UUID id = entry.getProfile().getId();
             String name = entry.getProfile().getName();
 
-            LiteralText nameText = new LiteralText(name);
-            Text uuidText = new LiteralText(id.toString()).formatted(Formatting.DARK_GRAY);
+            Text nameText = Text.literal(name);
+            Text uuidText = Text.literal(id.toString()).formatted(Formatting.DARK_GRAY);
 
             AvatarData data = AvatarDataManager.getDataForPlayer(id);
 
             if (data != null && !name.equals("")) {
-                NamePlateCustomization nameplateData = data.script == null ? null : data.script.nameplateCustomizations.get(NamePlateAPI.TABLIST);
+                NamePlateCustomization custom = data.script == null ? null : data.script.nameplateCustomizations.get(NamePlateAPI.TABLIST);
 
-                try {
-                    NamePlateAPI.applyFormattingRecursive(nameText, name, nameplateData, data);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (custom != null && custom.text != null && data.getTrustContainer().getTrust(TrustContainer.Trust.NAMEPLATE_EDIT) == 1)
+                    nameText = NamePlateCustomization.applyCustomization(custom.text);
+
+                if ((boolean) ConfigManager.Config.BADGES.value) {
+                    Text badges = NamePlateCustomization.getBadges(data);
+                    if (badges != null) ((MutableText) nameText).append(badges);
                 }
             }
 
@@ -241,7 +243,7 @@ public class FiguraTrustScreen extends Screen {
                 // #complexity#
 
                 int complexity = data.getComplexity();
-                MutableText complexityText = new TranslatableText("figura.gui.status.complexity").formatted(Formatting.GRAY).append(" " + complexity);
+                MutableText complexityText = MutableText.of(new TranslatableTextContent("figura.gui.status.complexity")).formatted(Formatting.GRAY).append(" " + complexity);
 
                 TrustContainer trustData = data.getTrustContainer();
                 if (trustData != null && complexity > trustData.getTrust(TrustContainer.Trust.COMPLEXITY))
@@ -259,7 +261,7 @@ public class FiguraTrustScreen extends Screen {
                 df.setRoundingMode(RoundingMode.HALF_UP);
                 float fileSize = Float.parseFloat(df.format(size / 1000.0f));
 
-                MutableText sizeText = new TranslatableText("figura.gui.status.filesize").formatted(Formatting.GRAY).append(" " + fileSize);
+                MutableText sizeText = MutableText.of(new TranslatableTextContent("figura.gui.status.filesize")).formatted(Formatting.GRAY).append(" " + fileSize);
                 if (size >= AvatarData.FILESIZE_LARGE_THRESHOLD)
                     sizeText.formatted(Formatting.RED);
                 else if (size >= AvatarData.FILESIZE_WARNING_THRESHOLD)
@@ -274,7 +276,7 @@ public class FiguraTrustScreen extends Screen {
         if (!resetPermissionButton.active) {
             resetPermissionButton.active = true;
             if (resetPermissionButton.isMouseOver(mouseX, mouseY)) {
-                renderTooltip(matrices, new TranslatableText("figura.gui.button.resetperm.tooltip"), mouseX, mouseY);
+                renderTooltip(matrices, MutableText.of(new TranslatableTextContent("figura.gui.button.resetperm.tooltip")), mouseX, mouseY);
             }
             resetPermissionButton.active = false;
         }
@@ -282,7 +284,7 @@ public class FiguraTrustScreen extends Screen {
         if (!clearCacheButton.active) {
             clearCacheButton.active = true;
             if (clearCacheButton.isMouseOver(mouseX, mouseY)) {
-                renderTooltip(matrices, new TranslatableText("figura.gui.button.clearcache.tooltip"), mouseX, mouseY);
+                renderTooltip(matrices, MutableText.of(new TranslatableTextContent("figura.gui.button.clearcache.tooltip")), mouseX, mouseY);
             }
             clearCacheButton.active = false;
         }
@@ -297,7 +299,7 @@ public class FiguraTrustScreen extends Screen {
             }
 
             TextRenderer tr = client.textRenderer;
-            Text displayText = Text.of(entry.getProfile().getName());
+            Text displayText = Text.literal(entry.getProfile().getName());
 
             drawTextWithShadow(matrices,
                     tr,

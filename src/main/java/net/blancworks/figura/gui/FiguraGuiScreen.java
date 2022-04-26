@@ -64,37 +64,37 @@ public class FiguraGuiScreen extends Screen {
     );
 
     public static final List<Text> DELETE_TOOLTIP = List.of(
-        new TranslatableText("figura.gui.button.deleteavatar.tooltip").setStyle(TEXT_COLORS.get(1)),
-        new TranslatableText("figura.gui.button.deleteavatartwo.tooltip").setStyle(TEXT_COLORS.get(1))
+        MutableText.of(new TranslatableTextContent("figura.gui.button.deleteavatar.tooltip")).setStyle(TEXT_COLORS.get(1)),
+        MutableText.of(new TranslatableTextContent("figura.gui.button.deleteavatartwo.tooltip")).setStyle(TEXT_COLORS.get(1))
     );
 
-    public static final TranslatableText UPLOAD_TOOLTIP = new TranslatableText("figura.gui.button.upload.tooltip");
+    public static final Text UPLOAD_TOOLTIP = MutableText.of(new TranslatableTextContent("figura.gui.button.upload.tooltip"));
     public static final List<Text> UPLOAD_LOCAL_TOOLTIP = List.of(
-        new TranslatableText("figura.gui.button.uploadlocal.tooltip").setStyle(TEXT_COLORS.get(1)),
-        new TranslatableText("figura.gui.button.uploadlocaltwo.tooltip").setStyle(TEXT_COLORS.get(1))
+        MutableText.of(new TranslatableTextContent("figura.gui.button.uploadlocal.tooltip")).setStyle(TEXT_COLORS.get(1)),
+        MutableText.of(new TranslatableTextContent("figura.gui.button.uploadlocaltwo.tooltip")).setStyle(TEXT_COLORS.get(1))
     );
 
     public static final List<Text> NO_CONNECTION_TOOLTIP = List.of(
-            new TranslatableText("figura.gui.button.noconnection.tooltip").setStyle(TEXT_COLORS.get(1)),
-            new TranslatableText("figura.gui.button.noconnectiontwo.tooltip").setStyle(TEXT_COLORS.get(1))
+            MutableText.of(new TranslatableTextContent("figura.gui.button.noconnection.tooltip")).setStyle(TEXT_COLORS.get(1)),
+            MutableText.of(new TranslatableTextContent("figura.gui.button.noconnectiontwo.tooltip")).setStyle(TEXT_COLORS.get(1))
     );
 
-    public static final TranslatableText MODEL_STATUS_TEXT = new TranslatableText("figura.gui.status.model");
-    public static final TranslatableText TEXTURE_STATUS_TEXT = new TranslatableText("figura.gui.status.texture");
-    public static final TranslatableText SCRIPT_STATUS_TEXT = new TranslatableText("figura.gui.status.script");
-    public static final TranslatableText BACKEND_STATUS_TEXT = new TranslatableText("figura.gui.status.backend");
+    public static final Text MODEL_STATUS_TEXT = MutableText.of(new TranslatableTextContent("figura.gui.status.model"));
+    public static final Text TEXTURE_STATUS_TEXT = MutableText.of(new TranslatableTextContent("figura.gui.status.texture"));
+    public static final Text SCRIPT_STATUS_TEXT = MutableText.of(new TranslatableTextContent("figura.gui.status.script"));
+    public static final Text BACKEND_STATUS_TEXT = MutableText.of(new TranslatableTextContent("figura.gui.status.backend"));
 
     public static final List<MutableText> STATUS_INDICATORS = List.of(
-            new LiteralText("-").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)),
-            new LiteralText("*").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)),
-            new LiteralText("/").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)),
-            new LiteralText("+").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))
+            Text.literal("-").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)),
+            Text.literal("*").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)),
+            Text.literal("/").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)),
+            Text.literal("+").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))
     );
 
-    public static final Text RELOAD_TOOLTIP = new TranslatableText("figura.gui.button.reloadavatar.tooltip");
-    public static final Text KEYBIND_TOOLTIP = new TranslatableText("figura.gui.button.keybinds.tooltip");
-    public static final Text SOUND_TOOLTIP = new TranslatableText("figura.gui.button.sounds.tooltip");
-    public static final Text MODEL_FOLDER_TOOLTIP = new TranslatableText("figura.gui.button.openfolder.tooltip");
+    public static final Text RELOAD_TOOLTIP = MutableText.of(new TranslatableTextContent("figura.gui.button.reloadavatar.tooltip"));
+    public static final Text KEYBIND_TOOLTIP = MutableText.of(new TranslatableTextContent("figura.gui.button.keybinds.tooltip"));
+    public static final Text SOUND_TOOLTIP = MutableText.of(new TranslatableTextContent("figura.gui.button.sounds.tooltip"));
+    public static final Text MODEL_FOLDER_TOOLTIP = MutableText.of(new TranslatableTextContent("figura.gui.button.openfolder.tooltip"));
 
     private static final int[] OvO = {265, 265, 264, 264, 263, 262, 263, 262, 66, 65, 257};
     private static int ovo = 0;
@@ -159,7 +159,7 @@ public class FiguraGuiScreen extends Screen {
     public ModelFileListWidget modelFileList;
 
     public FiguraGuiScreen(Screen parentScreen) {
-        super(new TranslatableText("figura.gui.menu.title"));
+        super(MutableText.of(new TranslatableTextContent("figura.gui.menu.title")));
         this.parentScreen = parentScreen;
 
         //reset model settings
@@ -187,7 +187,7 @@ public class FiguraGuiScreen extends Screen {
 
         int searchBoxWidth = paneWidth - 5;
         searchBoxX = 7;
-        this.searchBox = new CustomTextFieldWidget(this.textRenderer, searchBoxX, 22, searchBoxWidth, 20, this.searchBox, new TranslatableText("figura.gui.button.search").formatted(Formatting.ITALIC));
+        this.searchBox = new CustomTextFieldWidget(this.textRenderer, searchBoxX, 22, searchBoxWidth, 20, this.searchBox, MutableText.of(new TranslatableTextContent("figura.gui.button.search")).formatted(Formatting.ITALIC));
         this.searchBox.setChangedListener((string_1) -> modelFileList.filter(string_1, false));
         this.modelFileList = new ModelFileListWidget(this.client, paneWidth, this.height, paneY + 19, this.height - 36, 20, this.searchBox, this.modelFileList, this, modelFileListState);
         this.modelFileList.setLeftPos(5);
@@ -197,7 +197,7 @@ public class FiguraGuiScreen extends Screen {
         int width = Math.min(this.width - (this.width / 2 + modelBgSize / 2 + 38), 140);
 
         //open folder
-        openFolderButton = new ButtonWidget(5, this.height - 20 - 5, 140, 20, new TranslatableText("figura.gui.button.openfolder"), (buttonWidgetx) -> {
+        openFolderButton = new ButtonWidget(5, this.height - 20 - 5, 140, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.openfolder")), (buttonWidgetx) -> {
             Path modelDir = LocalAvatarData.getContentDirectory();
             try {
                 if (isHoldingShift && AvatarDataManager.localPlayerPath != null) {
@@ -218,23 +218,23 @@ public class FiguraGuiScreen extends Screen {
         this.addDrawableChild(openFolderButton);
 
         //save model
-        serializeAvatar = new ButtonWidget(this.width - width - 5, this.height - 75, width, 20, new TranslatableText("figura.gui.button.save"), (buttonWidgetx) -> {
+        serializeAvatar = new ButtonWidget(this.width - width - 5, this.height - 75, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.save")), (buttonWidgetx) -> {
             AvatarData local = AvatarDataManager.localPlayer;
             if (local != null && local.hasAvatar()) {
                 net.minecraft.nbt.NbtCompound nbt = new net.minecraft.nbt.NbtCompound();
                 local.writeNbt(nbt);
                 String result = net.blancworks.figura.parsers.FiguraAvatarSerializer.serialize(nbt);
 
-                if (result == null) FiguraMod.sendToast(new TranslatableText("figura.gui.button.save.error"), new TranslatableText("figura.gui.button.save.error.message"));
-                else FiguraMod.sendToast(new TranslatableText("figura.gui.button.save.done"), result);
+                if (result == null) FiguraMod.sendToast(MutableText.of(new TranslatableTextContent("figura.gui.button.save.error")), MutableText.of(new TranslatableTextContent("figura.gui.button.save.error.message")));
+                else FiguraMod.sendToast(MutableText.of(new TranslatableTextContent("figura.gui.button.save.done")), result);
             }
         });
 
         //export nbt
-        exportNbt = new ButtonWidget(this.width - width - 5, this.height - 50, width, 20, new TranslatableText("figura.gui.button.cache"), (buttonWidgetx) -> {
+        exportNbt = new ButtonWidget(this.width - width - 5, this.height - 50, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.cache")), (buttonWidgetx) -> {
             if (AvatarDataManager.localPlayer != null) {
                 AvatarDataManager.localPlayer.saveToCache();
-                FiguraMod.sendToast(new TranslatableText("figura.gui.button.cache.done"), "");
+                FiguraMod.sendToast(MutableText.of(new TranslatableTextContent("figura.gui.button.cache.done")), "");
             }
         });
 
@@ -242,19 +242,19 @@ public class FiguraGuiScreen extends Screen {
         this.addDrawableChild(exportNbt);
 
         //back button
-        this.addDrawableChild(new ButtonWidget(this.width - 145, this.height - 25, 140, 20, new TranslatableText("figura.gui.button.back"), (buttonWidgetx) -> {
+        this.addDrawableChild(new ButtonWidget(this.width - 145, this.height - 25, 140, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.back")), (buttonWidgetx) -> {
             this.client.setScreen(parentScreen);
             LocalAvatarManager.saveFolderNbt();
         }));
 
         //trust button
-        this.addDrawableChild(new ButtonWidget(this.width - width - 5, 15, width, 20, new TranslatableText("figura.gui.button.trustmenu"), (buttonWidgetx) -> this.client.setScreen(trustScreen)));
+        this.addDrawableChild(new ButtonWidget(this.width - width - 5, 15, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.trustmenu")), (buttonWidgetx) -> this.client.setScreen(trustScreen)));
 
         //config button
-        this.addDrawableChild(new ButtonWidget(this.width - width - 5, 40, width, 20, new TranslatableText("figura.gui.button.configmenu"), (buttonWidgetx) -> this.client.setScreen(configScreen)));
+        this.addDrawableChild(new ButtonWidget(this.width - width - 5, 40, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.configmenu")), (buttonWidgetx) -> this.client.setScreen(configScreen)));
 
         //help button
-        this.addDrawableChild(new ButtonWidget(this.width - width - 5, 65, width, 20, new TranslatableText("figura.gui.button.help"), (buttonWidgetx) -> this.client.setScreen(new ConfirmChatLinkScreen((bl) -> {
+        this.addDrawableChild(new ButtonWidget(this.width - width - 5, 65, width, 20, MutableText.of(new TranslatableTextContent("figura.gui.button.help")), (buttonWidgetx) -> this.client.setScreen(new ConfirmChatLinkScreen((bl) -> {
             if (bl) {
                 Util.getOperatingSystem().open("https://github.com/Blancworks/Figura/wiki/Figura-Panel");
             }
@@ -384,7 +384,7 @@ public class FiguraGuiScreen extends Screen {
         searchBox.render(matrices, mouseX, mouseY, delta);
 
         //draw status indicators
-        Text statusText = new LiteralText("").append(STATUS_INDICATORS.get(modelSizeStatus)).append("  ").append(STATUS_INDICATORS.get(textureStatus)).append("  ").append(STATUS_INDICATORS.get(scriptStatus)).append("  ").append(STATUS_INDICATORS.get(connectionStatus));
+        Text statusText = Text.empty().append(STATUS_INDICATORS.get(modelSizeStatus)).append("  ").append(STATUS_INDICATORS.get(textureStatus)).append("  ").append(STATUS_INDICATORS.get(scriptStatus)).append("  ").append(STATUS_INDICATORS.get(connectionStatus));
         drawTextWithShadow(matrices, this.textRenderer, statusText, this.width - 75, 89, 0xFFFFFF);
 
         //draw text
@@ -401,22 +401,22 @@ public class FiguraGuiScreen extends Screen {
 
         //mod version / warning
         if (AvatarDataManager.panic) {
-            Text panic = new LiteralText("").append(new TranslatableText("figura.gui.panic.warning").formatted(Formatting.YELLOW)).append(new LiteralText(" =").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)));
+            Text panic = Text.empty().append(MutableText.of(new TranslatableTextContent("figura.gui.panic.warning")).formatted(Formatting.YELLOW)).append(Text.literal(" =").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)));
             drawCenteredText(matrices, this.textRenderer, panic, this.width / 2, this.height - 12, 0xFFFFFF);
         }
         else if (FiguraMod.latestVersionStatus == 0) {
-            Text version = new LiteralText("Figura " + FiguraMod.MOD_VERSION).formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
+            Text version = Text.literal("Figura " + FiguraMod.MOD_VERSION).formatted(Formatting.DARK_GRAY, Formatting.ITALIC);
             drawCenteredText(matrices, this.textRenderer, version, this.width / 2, this.height - 12, 0xFFFFFF);
         } else if (FiguraMod.latestVersionStatus < 0) {
-            Text version = new LiteralText("").append(new LiteralText("Figura " + FiguraMod.MOD_VERSION).formatted(Formatting.YELLOW, Formatting.ITALIC)).append(new LiteralText(" =").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)));
+            Text version = Text.empty().append(Text.literal("Figura " + FiguraMod.MOD_VERSION).formatted(Formatting.YELLOW, Formatting.ITALIC)).append(Text.literal(" =").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)));
             drawCenteredText(matrices, this.textRenderer, version, this.width / 2, this.height - 12, 0xFFFFFF);
 
             //status tooltip
             int textWidth = this.textRenderer.getWidth(version);
             if (mouseX >= this.width / 2 - textWidth / 2 && mouseX < this.width / 2 + textWidth / 2 && mouseY >= this.height - 12 && mouseY < this.height - 1) {
                 List<Text> tooltipText = List.of(
-                        new LiteralText("").append(new TranslatableText("figura.gui.newver.tooltip")).append(" ").append(new LiteralText(FiguraMod.latestVersion).formatted(Formatting.YELLOW, Formatting.UNDERLINE)),
-                        new TranslatableText("figura.gui.newver.tooltip2")
+                        Text.empty().append(MutableText.of(new TranslatableTextContent("figura.gui.newver.tooltip"))).append(" ").append(Text.literal(FiguraMod.latestVersion).formatted(Formatting.YELLOW, Formatting.UNDERLINE)),
+                        MutableText.of(new TranslatableTextContent("figura.gui.newver.tooltip2"))
                 );
                 matrices.push();
                 matrices.translate(0, 0, 599);
@@ -425,15 +425,15 @@ public class FiguraGuiScreen extends Screen {
             }
         } else {
             String load = Integer.toHexString(Math.abs(FiguraMod.ticksElapsed) % 16);
-            Text version = new LiteralText("Figura " + FiguraMod.MOD_VERSION).formatted(Formatting.DARK_PURPLE, Formatting.ITALIC);
+            Text version = Text.literal("Figura " + FiguraMod.MOD_VERSION).formatted(Formatting.DARK_PURPLE, Formatting.ITALIC);
             drawCenteredText(matrices, this.textRenderer, version, this.width / 2, this.height - 12, 0xFFFFFF);
 
             //status tooltip
             int textWidth = this.textRenderer.getWidth(version);
             if (mouseX >= this.width / 2 - textWidth / 2 && mouseX < this.width / 2 + textWidth / 2 && mouseY >= this.height - 12 && mouseY < this.height - 1) {
                 List<Text> tooltipText = List.of(
-                        new LiteralText("Are you a time traveller?").formatted(Formatting.LIGHT_PURPLE),
-                        new LiteralText("Latest version is: ").formatted(Formatting.LIGHT_PURPLE).append(new LiteralText(FiguraMod.latestVersion).formatted(Formatting.AQUA, Formatting.UNDERLINE))
+                        Text.literal("Are you a time traveller?").formatted(Formatting.LIGHT_PURPLE),
+                        Text.literal("Latest version is: ").formatted(Formatting.LIGHT_PURPLE).append(Text.literal(FiguraMod.latestVersion).formatted(Formatting.AQUA, Formatting.UNDERLINE))
                 );
                 matrices.push();
                 matrices.translate(0, 0, 599);
@@ -488,28 +488,28 @@ public class FiguraGuiScreen extends Screen {
             if (mouseX >= this.width - 77 && mouseX < this.width - 61) {
                 tooltip = List.of(
                         MODEL_STATUS_TEXT,
-                        new LiteralText("").append(STATUS_INDICATORS.get(modelSizeStatus)).append(" ").append(new TranslatableText("figura.gui.button.status.model." + modelSizeStatus).setStyle(TEXT_COLORS.get(modelSizeStatus)))
+                        Text.empty().append(STATUS_INDICATORS.get(modelSizeStatus)).append(" ").append(MutableText.of(new TranslatableTextContent("figura.gui.button.status.model." + modelSizeStatus)).setStyle(TEXT_COLORS.get(modelSizeStatus)))
                 );
             }
             //texture
             else if (mouseX >= this.width - 58 && mouseX < this.width - 42) {
                 tooltip = List.of(
                         TEXTURE_STATUS_TEXT,
-                        new LiteralText("").append(STATUS_INDICATORS.get(textureStatus)).append(" ").append(new TranslatableText("figura.gui.button.status.texture." + textureStatus).setStyle(TEXT_COLORS.get(textureStatus)))
+                        Text.empty().append(STATUS_INDICATORS.get(textureStatus)).append(" ").append(MutableText.of(new TranslatableTextContent("figura.gui.button.status.texture." + textureStatus)).setStyle(TEXT_COLORS.get(textureStatus)))
                 );
             }
             //script
             else if (mouseX >= this.width - 39 && mouseX < this.width - 23) {
                 tooltip = List.of(
                         SCRIPT_STATUS_TEXT,
-                        new LiteralText("").append(STATUS_INDICATORS.get(scriptStatus)).append(" ").append(new TranslatableText("figura.gui.button.status.script." + scriptStatus).setStyle(TEXT_COLORS.get(scriptStatus)))
+                        Text.empty().append(STATUS_INDICATORS.get(scriptStatus)).append(" ").append(MutableText.of(new TranslatableTextContent("figura.gui.button.status.script." + scriptStatus)).setStyle(TEXT_COLORS.get(scriptStatus)))
                 );
             }
             //backend
             else if (mouseX >= this.width - 20 && mouseX < this.width - 4) {
                 tooltip = List.of(
                         BACKEND_STATUS_TEXT,
-                        new LiteralText("").append(STATUS_INDICATORS.get(connectionStatus)).append(" ").append(new TranslatableText("figura.gui.button.status.backend." + connectionStatus).setStyle(TEXT_COLORS.get(connectionStatus)))
+                        Text.empty().append(STATUS_INDICATORS.get(connectionStatus)).append(" ").append(MutableText.of(new TranslatableTextContent("figura.gui.button.status.backend." + connectionStatus)).setStyle(TEXT_COLORS.get(connectionStatus)))
                 );
             }
 
@@ -585,23 +585,23 @@ public class FiguraGuiScreen extends Screen {
     public void updateAvatarData() {
         if (AvatarDataManager.localPlayer != null && AvatarDataManager.localPlayer.hasAvatar()) {
             if (AvatarDataManager.localPlayer.loadedName != null) {
-                nameText = new TranslatableText("figura.gui.status.name");
+                nameText = MutableText.of(new TranslatableTextContent("figura.gui.status.name"));
                 int maxWidth = this.width / 2 - modelBgSize / 2 - 41 - this.textRenderer.getWidth(nameText);
                 String toTrim = " " + AvatarDataManager.localPlayer.loadedName;
 
                 if (this.textRenderer.getWidth(toTrim) > maxWidth)
                     toTrim = this.textRenderer.trimToWidth(toTrim, maxWidth - this.textRenderer.getWidth("...")) + "...";
 
-                nameText.append(new LiteralText(toTrim).styled(FiguraMod.ACCENT_COLOR));
+                nameText.append(Text.literal(toTrim).styled(FiguraMod.ACCENT_COLOR));
             } else {
                 nameText = null;
             }
 
             if (AvatarDataManager.localPlayer.model != null) {
-                modelComplexityText = new TranslatableText("figura.gui.status.complexity").append(new LiteralText(" " + AvatarDataManager.localPlayer.getComplexity()).styled(FiguraMod.ACCENT_COLOR));
+                modelComplexityText = MutableText.of(new TranslatableTextContent("figura.gui.status.complexity")).append(Text.literal(" " + AvatarDataManager.localPlayer.getComplexity()).styled(FiguraMod.ACCENT_COLOR));
             }
             else {
-                modelComplexityText = new TranslatableText("figura.gui.status.complexity").append(new LiteralText(" " + 0).styled(FiguraMod.ACCENT_COLOR));
+                modelComplexityText = MutableText.of(new TranslatableTextContent("figura.gui.status.complexity")).append(Text.literal(" " + 0).styled(FiguraMod.ACCENT_COLOR));
                 modelSizeStatus = 0;
             }
 
@@ -632,7 +632,7 @@ public class FiguraGuiScreen extends Screen {
         df.setRoundingMode(RoundingMode.HALF_UP);
         float size = Float.parseFloat(df.format(fileSize / 1000.0f));
 
-        MutableText fsText = new TranslatableText("figura.gui.status.filesize").append(new LiteralText(" " + size).styled(FiguraMod.ACCENT_COLOR));
+        MutableText fsText = MutableText.of(new TranslatableTextContent("figura.gui.status.filesize")).append(Text.literal(" " + size).styled(FiguraMod.ACCENT_COLOR));
 
         if (fileSize >= AvatarData.FILESIZE_LARGE_THRESHOLD) {
             fsText.setStyle(TEXT_COLORS.get(1));
@@ -803,7 +803,7 @@ public class FiguraGuiScreen extends Screen {
         if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
             isHoldingShift = false;
             deleteButton.active = false;
-            openFolderButton.setMessage(new TranslatableText("figura.gui.button.openfolder"));
+            openFolderButton.setMessage(MutableText.of(new TranslatableTextContent("figura.gui.button.openfolder")));
         }
 
         return result;
@@ -850,7 +850,7 @@ public class FiguraGuiScreen extends Screen {
         if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
             isHoldingShift = true;
             deleteButton.active = connectionStatus == 3;
-            openFolderButton.setMessage(new TranslatableText("figura.gui.button.openavatarfolder"));
+            openFolderButton.setMessage(MutableText.of(new TranslatableTextContent("figura.gui.button.openavatarfolder")));
         }
 
         return result;
@@ -890,7 +890,7 @@ public class FiguraGuiScreen extends Screen {
                 });
             }
             this.client.setScreen(this);
-        }, new TranslatableText("figura.gui.dropconfirm"), new LiteralText(string)));
+        }, MutableText.of(new TranslatableTextContent("figura.gui.dropconfirm")), Text.literal(string)));
     }
 
     public static void drawEntity(int x, int y, int size, float rotationX, float rotationY, LivingEntity entity) {

@@ -4,7 +4,8 @@ import net.blancworks.figura.gui.widgets.FiguraSoundWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.TranslatableTextContent;
 
 public class FiguraSoundScreen extends Screen {
 
@@ -12,7 +13,7 @@ public class FiguraSoundScreen extends Screen {
     private FiguraSoundWidget soundWidget;
 
     public FiguraSoundScreen(Screen parentScreen) {
-        super(new TranslatableText("figura.gui.sounds.title"));
+        super(MutableText.of(new TranslatableTextContent("figura.gui.sounds.title")));
         this.parentScreen = parentScreen;
     }
 
@@ -20,7 +21,7 @@ public class FiguraSoundScreen extends Screen {
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 75, this.height - 29, 150, 20, new TranslatableText("gui.back"), (buttonWidgetx) -> this.client.setScreen(parentScreen)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 75, this.height - 29, 150, 20, MutableText.of(new TranslatableTextContent("gui.back")), (buttonWidgetx) -> this.client.setScreen(parentScreen)));
 
         this.soundWidget = new FiguraSoundWidget(this, this.client);
         this.addSelectableChild(this.soundWidget);

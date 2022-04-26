@@ -6,7 +6,7 @@ import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
 import net.blancworks.figura.config.ConfigManager;
 import net.blancworks.figura.gui.widgets.PlayerListWidget;
-import net.blancworks.figura.lua.api.nameplate.NamePlateAPI;
+import net.blancworks.figura.lua.api.nameplate.NamePlateCustomization;
 import net.blancworks.figura.trust.PlayerTrustManager;
 import net.blancworks.figura.trust.TrustContainer;
 import net.blancworks.figura.utils.MathUtils;
@@ -17,7 +17,10 @@ import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.text.*;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -41,15 +44,15 @@ public class PlayerPopup extends DrawableHelper {
     public static AvatarData data;
 
     public static final List<Text> BUTTONS = List.of(
-            new TranslatableText("figura.playerpopup.cancel"),
-            new TranslatableText("figura.playerpopup.reload"),
-            new TranslatableText("figura.playerpopup.increasetrust"),
-            new TranslatableText("figura.playerpopup.decreasetrust"),
-            new TranslatableText("figura.playerpopup.trustmenu")
+            MutableText.of(new TranslatableTextContent("figura.playerpopup.cancel")),
+            MutableText.of(new TranslatableTextContent("figura.playerpopup.reload")),
+            MutableText.of(new TranslatableTextContent("figura.playerpopup.increasetrust")),
+            MutableText.of(new TranslatableTextContent("figura.playerpopup.decreasetrust")),
+            MutableText.of(new TranslatableTextContent("figura.playerpopup.trustmenu"))
     );
 
-    private static final Text TRUST_TEXT = new LiteralText("").append(new LiteralText("! ").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))).append(new TranslatableText("figura.playerpopup.trustissue"));
-    private static final Text SCRIPT_TEXT = new LiteralText("").append(new LiteralText("▲ ").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))).append(new TranslatableText("figura.playerpopup.scriptissue"));
+    private static final Text TRUST_TEXT = Text.empty().append(Text.literal("! ").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))).append(MutableText.of(new TranslatableTextContent("figura.playerpopup.trustissue")));
+    private static final Text SCRIPT_TEXT = Text.empty().append(Text.literal("▲ ").setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT))).append(MutableText.of(new TranslatableTextContent("figura.playerpopup.scriptissue")));
 
     private static final FiguraTrustScreen TRUST_SCREEN = new FiguraTrustScreen(null);
 
@@ -120,7 +123,7 @@ public class PlayerPopup extends DrawableHelper {
 
             matrices.push();
             matrices.scale(0.5f, 0.5f, 0.5f);
-            TextUtils.renderOutlineText(textRenderer, toRender, -textRenderer.getWidth(toRender) / 2f, -70, color, 0x202020, matrices);
+            TextUtils.renderOutlineText(matrices, textRenderer, toRender, -textRenderer.getWidth(toRender) / 2f, -70, color, 0x202020);
             matrices.pop();
         } else {
             offset = 0f;
@@ -128,7 +131,7 @@ public class PlayerPopup extends DrawableHelper {
 
         //title
         Text title = BUTTONS.get(index);
-        TextUtils.renderOutlineText(textRenderer, title, -textRenderer.getWidth(title) / 2f, -40 + offset, 0xFFFFFF, 0x202020, matrices);
+        TextUtils.renderOutlineText(matrices, textRenderer, title, -textRenderer.getWidth(title) / 2f, -40 + offset, 0xFFFFFF, 0x202020);
 
         int color = ConfigManager.ACCENT_COLOR.apply(Style.EMPTY).getColor().getRgb();
         int length = BUTTONS.size() * 18;
@@ -148,10 +151,10 @@ public class PlayerPopup extends DrawableHelper {
 
         //playername
         MutableText name = data.name.shallowCopy().formatted(Formatting.BLACK);
-        Text badges = NamePlateAPI.getBadges(data);
+        Text badges = NamePlateCustomization.getBadges(data);
         if (badges != null) name.append(badges);
 
-        Text trust = new TranslatableText("figura.trust." + data.getTrustContainer().getParent().getPath()).formatted(Formatting.BLACK);
+        Text trust = MutableText.of(new TranslatableTextContent("figura.trust." + data.getTrustContainer().getParent().getPath())).formatted(Formatting.BLACK);
 
         matrices.scale(0.5f, 0.5f, 0.5f);
         matrices.translate(0f, 0f, -1f);
@@ -181,8 +184,8 @@ public class PlayerPopup extends DrawableHelper {
     public static void execute() {
         if (data != null) {
             data.hasPopup = false;
-            MutableText playerName = new LiteralText("").append(data.name);
-            Text badges = NamePlateAPI.getBadges(data);
+            MutableText playerName = Text.empty().append(data.name);
+            Text badges = NamePlateCustomization.getBadges(data);
             if (badges != null) playerName.append(badges);
 
             switch (index) {
@@ -195,12 +198,12 @@ public class PlayerPopup extends DrawableHelper {
                 case 2 -> {
                     TrustContainer tc = data.getTrustContainer();
                     if (PlayerTrustManager.increaseTrust(tc))
-                        FiguraMod.sendToast(playerName, new TranslatableText("figura.toast.avatar.trust.title").append(new TranslatableText("figura.trust." + tc.getParent().getPath())));
+                        FiguraMod.sendToast(playerName, MutableText.of(new TranslatableTextContent("figura.toast.avatar.trust.title")).append(MutableText.of(new TranslatableTextContent("figura.trust." + tc.getParent().getPath()))));
                 }
                 case 3 -> {
                     TrustContainer tc = data.getTrustContainer();
                     if (PlayerTrustManager.decreaseTrust(tc))
-                        FiguraMod.sendToast(playerName, new TranslatableText("figura.toast.avatar.trust.title").append(new TranslatableText("figura.trust." + tc.getParent().getPath())));
+                        FiguraMod.sendToast(playerName, MutableText.of(new TranslatableTextContent("figura.toast.avatar.trust.title")).append(MutableText.of(new TranslatableTextContent("figura.trust." + tc.getParent().getPath()))));
                 }
                 case 4 -> {
                     MinecraftClient.getInstance().setScreen(TRUST_SCREEN);

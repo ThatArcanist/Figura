@@ -9,8 +9,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
@@ -22,7 +23,7 @@ public class NewActionWheel extends DrawableHelper {
 
     private static final Identifier ACTION_WHEEL = new Identifier("figura", "textures/gui/new_action_wheel.png");
     private static final Vec3f ERROR_COLOR = new Vec3f(1f, 0.28f, 0.28f);
-    private static final List<Text> NO_FUNCTION_MESSAGE = ImmutableList.of(new TranslatableText("figura.actionwheel.nofunction"));
+    private static final List<Text> NO_FUNCTION_MESSAGE = ImmutableList.of(MutableText.of(new TranslatableTextContent("figura.actionwheel.nofunction")));
 
     public static String selectedSlot;
     public static boolean enabled = false;

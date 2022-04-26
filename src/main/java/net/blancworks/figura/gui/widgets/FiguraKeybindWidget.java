@@ -12,9 +12,9 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +43,7 @@ public class FiguraKeybindWidget extends ElementListWidget<FiguraKeybindWidget.E
 
         AvatarData data = AvatarDataManager.localPlayer;
         if (data != null && data.script != null) {
-            data.script.keyBindings.forEach(binding -> this.addEntry(new FiguraKeybindEntry(Text.of(binding.name), binding)));
+            data.script.keyBindings.forEach(binding -> this.addEntry(new FiguraKeybindEntry(Text.literal(binding.name), binding)));
         }
     }
 
@@ -64,7 +64,7 @@ public class FiguraKeybindWidget extends ElementListWidget<FiguraKeybindWidget.E
             this.toggle = new ButtonWidget(0, 0, 80, 20, this.display, (button) -> focusedBinding = binding);
 
             //reset button
-            this.reset = new ButtonWidget(0, 0, 40, 20, new TranslatableText("controls.reset"), (button) -> binding.resetToDefault());
+            this.reset = new ButtonWidget(0, 0, 40, 20, MutableText.of(new TranslatableTextContent("controls.reset")), (button) -> binding.resetToDefault());
         }
 
         public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
@@ -85,7 +85,7 @@ public class FiguraKeybindWidget extends ElementListWidget<FiguraKeybindWidget.E
             this.toggle.setMessage(this.binding.getLocalizedText());
 
             if (focusedBinding == this.binding) {
-                this.toggle.setMessage(new LiteralText("> ").styled(FiguraMod.ACCENT_COLOR).append(this.toggle.getMessage()).append(" <"));
+                this.toggle.setMessage(Text.literal("> ").styled(FiguraMod.ACCENT_COLOR).append(this.toggle.getMessage()).append(" <"));
             }
 
             this.toggle.render(matrices, mouseX, mouseY, tickDelta);

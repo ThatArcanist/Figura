@@ -2,7 +2,7 @@ package net.blancworks.figura.network;
 
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketFactory;
-import net.blancworks.figura.*;
+import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarDataManager;
 import net.blancworks.figura.avatar.LocalAvatarData;
 import net.blancworks.figura.config.ConfigManager.Config;
@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 
@@ -249,11 +248,11 @@ public class NewFiguraNetworkManager implements IFiguraNetwork {
 
     @Override
     public void parseKickAuthMessage(Text reason) {
-        if (reason.asString().equals("This is the Figura Auth Server V2.0!\n")) {
+        if (reason.getString().equals("This is the Figura Auth Server V2.0!\n")) {
 
             Text tokenText = reason.getSiblings().get(1);
 
-            jwtToken = tokenText.asString();
+            jwtToken = tokenText.getString();
             tokenReceivedTime = new Date();
         }
     }

@@ -15,8 +15,9 @@ import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -32,7 +33,7 @@ public class ActionWheel extends DrawableHelper {
     private static final Identifier ACTION_WHEEL = new Identifier("figura", "textures/gui/action_wheel.png");
     private static final Identifier ACTION_WHEEL_SELECTED = new Identifier("figura", "textures/gui/action_wheel_selected.png");
     private static final Vec3f ERROR_COLOR = new Vec3f(1f, 0.28f, 0.28f);
-    private static final List<Text> NO_FUNCTION_MESSAGE = ImmutableList.of(new TranslatableText("figura.actionwheel.nofunction"));
+    private static final List<Text> NO_FUNCTION_MESSAGE = ImmutableList.of(MutableText.of(new TranslatableTextContent("figura.actionwheel.nofunction")));
 
     public static int selectedSlot = -1;
     public static boolean enabled = false;
@@ -104,13 +105,13 @@ public class ActionWheel extends DrawableHelper {
             //draw warning texts
             drawCenteredTextWithShadow(
                     matrices, MinecraftClient.getInstance().textRenderer,
-                    new TranslatableText("figura.actionwheel.warning").formatted(Formatting.UNDERLINE).asOrderedText(),
+                    MutableText.of(new TranslatableTextContent("figura.actionwheel.warning")).formatted(Formatting.UNDERLINE).asOrderedText(),
                     (int) wheelPos.x, (int) wheelPos.y - 4,
                     Formatting.RED.getColorValue()
             );
             drawCenteredTextWithShadow(
                     matrices, MinecraftClient.getInstance().textRenderer,
-                    new TranslatableText("figura.actionwheel.warninginfo").asOrderedText(),
+                    MutableText.of(new TranslatableTextContent("figura.actionwheel.warninginfo")).asOrderedText(),
                     (int) wheelPos.x, (int) Math.max(wheelPos.y - wheelSize / 2f - 10, 4),
                     Formatting.RED.getColorValue()
             );

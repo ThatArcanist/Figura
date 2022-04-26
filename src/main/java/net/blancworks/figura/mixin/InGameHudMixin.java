@@ -4,16 +4,24 @@ import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.access.InGameHudAccess;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
+import net.blancworks.figura.config.ConfigManager.Config;
 import net.blancworks.figura.gui.ActionWheel;
 import net.blancworks.figura.gui.NewActionWheel;
 import net.blancworks.figura.gui.PlayerPopup;
+import net.blancworks.figura.lua.api.nameplate.NamePlateAPI;
+import net.blancworks.figura.lua.api.nameplate.NamePlateCustomization;
+import net.blancworks.figura.trust.TrustContainer;
+import net.blancworks.figura.utils.TextUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,12 +31,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
+import java.util.UUID;
+
 @Mixin(InGameHud.class)
 public class InGameHudMixin implements InGameHudAccess {
 
     @Shadow private Text title;
     @Shadow private Text subtitle;
     @Shadow private Text overlayMessage;
+    @Shadow @Final private MinecraftClient client;
 
     @Inject(at = @At ("HEAD"), method = "render")
     public void preRender(MatrixStack matrices, float tickDelta, CallbackInfo ci) {
@@ -88,6 +99,41 @@ public class InGameHudMixin implements InGameHudAccess {
         if (!AvatarDataManager.panic && currentData != null && currentData.script != null && currentData.script.crossHairPos != null) {
             args.set(1, (int) ((int) args.get(1) + currentData.script.crossHairPos.x));
             args.set(2, (int) ((int) args.get(2) + currentData.script.crossHairPos.y));
+        }
+    }
+
+    @ModifyArgs(method = "addChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/ClientChatListener;onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V"))
+    private void onChatMessage(Args args) {
+        if (this.client.player == null || !(boolean) Config.CHAT_MODIFICATIONS.value)
+            return;
+
+        for (UUID uuid : this.client.player.networkHandler.getPlayerUuids()) {
+            //get player
+            PlayerListEntry player = this.client.player.networkHandler.getPlayerListEntry(uuid);
+            if (player == null)
+                continue;
+
+            //get metadata
+            AvatarData data = AvatarDataManager.getDataForPlayer(uuid);
+            if (data == null)
+                return;
+
+            //apply customization
+            Text replacement;
+            Text message = args.get(1);
+            NamePlateCustomization custom = data.script == null ? null : data.script.nameplateCustomizations.get(NamePlateAPI.CHAT);
+            if (custom != null && custom.text != null && data.getTrustContainer().getTrust(TrustContainer.Trust.NAMEPLATE_EDIT) == 1) {
+                replacement = NamePlateCustomization.applyCustomization(custom.text.replaceAll("\n|\\\\n", ""));
+            } else {
+                replacement = Text.literal(player.getProfile().getName());
+            }
+
+            if ((boolean) Config.BADGES.value) {
+                Text badges = NamePlateCustomization.getBadges(data);
+                if (badges != null) ((MutableText) replacement).append(badges);
+            }
+
+            args.set(1, TextUtils.replaceInText(message, "\\b" + player.getProfile().getName() + "\\b", replacement));
         }
     }
 

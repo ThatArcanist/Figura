@@ -2,10 +2,10 @@ package net.blancworks.figura.network;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.blancworks.figura.config.ConfigManager.Config;
 import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
+import net.blancworks.figura.config.ConfigManager.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientLoginNetworkHandler;
 import net.minecraft.nbt.NbtCompound;
@@ -221,10 +221,10 @@ public class FiguraNetworkManager implements IFiguraNetwork {
 
     public void parseAuthKeyFromDisconnectMessage(Text reason) {
         try {
-            if (reason.asString().equals("This is the Figura Auth Server!\n")) {
+            if (reason.getString().equals("This is the Figura Auth Server!\n")) {
 
                 Text keyText = reason.getSiblings().get(1);
-                figuraSessionKey = Integer.parseInt(keyText.asString());
+                figuraSessionKey = Integer.parseInt(keyText.getString());
                 hasAuthKey = true;
                 lastAuthDate = new Date();
             }

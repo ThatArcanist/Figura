@@ -31,9 +31,10 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 import org.apache.logging.log4j.LogManager;
@@ -60,7 +61,7 @@ public class FiguraMod implements ClientModInitializer {
 
     public static final Identifier FIGURA_FONT = new Identifier("figura", "default");
     public static final UnaryOperator<Style> ACCENT_COLOR = FiguraMod::getAccentColor;
-    public static final Vec3f ACE_BLUE = new Vec3f(0.69f, 0.95f, 1f); //0xaff2ff
+    public static final Vec3f MAYA_BLUE = new Vec3f(0.05f, 0.88f, 0.81f); //0x0ce0ce
     public static final Vec3f FRAN_PINK = new Vec3f(1f, 0.45f, 0.72f); //0xff72b7
 
     public static final String MOD_VERSION = FabricLoader.getInstance().getModContainer("figura").get().getMetadata().getVersion().getFriendlyString();
@@ -230,8 +231,8 @@ public class FiguraMod implements ClientModInitializer {
     }
 
     public static void sendToast(Object title, Object message) {
-        Text text = title instanceof Text t ? t : new TranslatableText(title.toString());
-        Text text2 = message instanceof Text m ? m : new TranslatableText(message.toString());
+        Text text = title instanceof Text t ? t : MutableText.of(new TranslatableTextContent(title.toString()));
+        Text text2 = message instanceof Text m ? m : MutableText.of(new TranslatableTextContent(message.toString()));
 
         MinecraftClient.getInstance().getToastManager().clear();
         MinecraftClient.getInstance().getToastManager().add(new FiguraToast(text, text2));
@@ -280,7 +281,6 @@ public class FiguraMod implements ClientModInitializer {
 
     public final static List<UUID> VIP = List.of(
             UUID.fromString("aa0e3391-e497-4e8e-8afe-b69dfaa46afa"), //salad
-            UUID.fromString("da53c608-d17c-4759-94fe-a0317ed63876"), //zandra
             UUID.fromString("66a6c5c4-963b-4b73-a0d9-162faedd8b7f"), //fran
             UUID.fromString("45361fcf-f188-46de-ae96-43d89afd6658"), //money
             UUID.fromString("d47ce8af-b942-47de-8790-f602241531e3"), //omo

@@ -5,7 +5,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.TranslatableTextContent;
 
 public class FiguraKeyBindsScreen extends Screen {
 
@@ -13,7 +14,7 @@ public class FiguraKeyBindsScreen extends Screen {
     private FiguraKeybindWidget keyBindingsWidget;
 
     public FiguraKeyBindsScreen(Screen parentScreen) {
-        super(new TranslatableText("figura.gui.keybinds.title"));
+        super(MutableText.of(new TranslatableTextContent("figura.gui.keybinds.title")));
         this.parentScreen = parentScreen;
     }
 
@@ -21,7 +22,7 @@ public class FiguraKeyBindsScreen extends Screen {
     protected void init() {
         super.init();
 
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 75, this.height - 29, 150, 20, new TranslatableText("gui.back"), (buttonWidgetx) -> this.client.setScreen(parentScreen)));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 75, this.height - 29, 150, 20, MutableText.of(new TranslatableTextContent("gui.back")), (buttonWidgetx) -> this.client.setScreen(parentScreen)));
 
         this.keyBindingsWidget = new FiguraKeybindWidget(this, this.client);
         this.addSelectableChild(this.keyBindingsWidget);

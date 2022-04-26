@@ -15,10 +15,10 @@ public class PermissionListSliderEntry extends PermissionListEntry {
     public PermissionListSliderEntry(TrustContainer.Trust trust, CustomListWidget<?, ?> list, TrustContainer container) {
         super(trust, list, container);
 
-        widget = new CustomSliderWidget(0, 0, 0, 20, Text.of(trust.getValueText(container.getTrust(trust))), MathHelper.getLerpProgress(container.getTrust(trust), trust.min, trust.max)) {
+        widget = new CustomSliderWidget(0, 0, 0, 20, Text.literal(trust.getValueText(container.getTrust(trust))), MathHelper.getLerpProgress(container.getTrust(trust), trust.min, trust.max)) {
             @Override
             public void updateMessage() {
-                setMessage(Text.of(trust.getValueText(container.getTrust(trust))));
+                setMessage(Text.literal(trust.getValueText(container.getTrust(trust))));
             }
 
             @Override

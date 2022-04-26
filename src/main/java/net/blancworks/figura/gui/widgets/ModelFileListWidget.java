@@ -10,10 +10,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 
 import java.util.Map;
@@ -33,7 +33,7 @@ public class ModelFileListWidget extends CustomListWidget<PlayerListEntry, Custo
             addEntry(new ModelFileListWidgetEntry("", this, LocalAvatarManager.init ? "figura.models.unselect" : "figura.models.loading", null, 0) {
                 @Override
                 public Text getDisplayText() {
-                    return new TranslatableText(this.getName()).formatted(Formatting.ITALIC, Formatting.DARK_GRAY);
+                    return MutableText.of(new TranslatableTextContent(this.getName())).formatted(Formatting.ITALIC, Formatting.DARK_GRAY);
                 }
             });
         }
@@ -136,7 +136,7 @@ public class ModelFileListWidget extends CustomListWidget<PlayerListEntry, Custo
 
         @Override
         public Text getDisplayText() {
-            return new LiteralText("  ".repeat(offset) + getName());
+            return Text.literal("  ".repeat(offset) + getName());
         }
     }
 
@@ -150,10 +150,10 @@ public class ModelFileListWidget extends CustomListWidget<PlayerListEntry, Custo
 
         @Override
         public Text getDisplayText() {
-            return new LiteralText("  ".repeat(offset)).append(new LiteralText(this.expanded ? "V " : "> ")
+            return Text.literal("  ".repeat(offset)).append(Text.literal(this.expanded ? "V " : "> ")
                     .setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)))
                     .formatted(this.expanded ? Formatting.GRAY : Formatting.DARK_GRAY)
-                    .append(new LiteralText(getName()));
+                    .append(Text.literal(getName()));
         }
     }
 }

@@ -26,7 +26,7 @@ public abstract class CustomSliderWidget extends SliderWidget {
         matrices.translate(0f, 0f, 0.1f);
 
         TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-        TextUtils.renderOutlineText(textRenderer, this.getMessage(), this.x + this.width / 2f - textRenderer.getWidth(this.getMessage()) / 2f, this.y + (this.height - 8) / 2f, this.active ? 0xFFFFFF : 0xA0A0A0 | MathHelper.ceil(this.alpha * 255.0F) << 24, 0x202020, matrices);
+        TextUtils.renderOutlineText(matrices, textRenderer, this.getMessage(), this.x + this.width / 2f - textRenderer.getWidth(this.getMessage()) / 2f, this.y + (this.height - 8) / 2f, this.active ? 0xFFFFFF : 0xA0A0A0 | MathHelper.ceil(this.alpha * 255.0F) << 24, 0x202020);
         matrices.pop();
     }
 

@@ -14,7 +14,7 @@ import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.gl.WindowFramebuffer;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.luaj.vm2.*;
@@ -81,7 +81,7 @@ public class RenderLayerAPI {
                             script.shaders.put(name, newShader);
                         } catch (IOException e) {
                             if (script.avatarData.isLocalAvatar)
-                                CustomScript.sendChatMessage(new LiteralText(e.getMessage()).formatted(Formatting.RED));
+                                CustomScript.sendChatMessage(Text.literal(e.getMessage()).formatted(Formatting.RED));
                             e.printStackTrace();
                         } catch (Exception e) {
                             script.handleError(e);

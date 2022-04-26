@@ -5,7 +5,7 @@ import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.avatar.AvatarData;
 import net.blancworks.figura.avatar.AvatarDataManager;
 import net.blancworks.figura.gui.FiguraTrustScreen;
-import net.blancworks.figura.lua.api.nameplate.NamePlateAPI;
+import net.blancworks.figura.lua.api.nameplate.NamePlateCustomization;
 import net.blancworks.figura.mixin.PlayerListHudAccessorMixin;
 import net.blancworks.figura.trust.PlayerTrustManager;
 import net.blancworks.figura.trust.TrustContainer;
@@ -16,7 +16,10 @@ import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.*;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -64,8 +67,8 @@ public class PlayerListWidget extends CustomListWidget<PlayerListEntry, PlayerLi
         for (Map.Entry<Identifier, TrustContainer> entry : PlayerTrustManager.groups.entrySet()) {
             addEntry(new GroupListWidgetEntry(entry.getKey(), this) {{
                 identifier = entry.getKey().toString();
-                Text text = new TranslatableText("figura.trust." + entry.getKey().getPath());
-                displayText = new LiteralText("").append(new LiteralText(entry.getValue().expanded ? "V " : "> ")
+                Text text = MutableText.of(new TranslatableTextContent("figura.trust." + entry.getKey().getPath()));
+                displayText = Text.empty().append(Text.literal(entry.getValue().expanded ? "V " : "> ")
                         .setStyle(Style.EMPTY.withFont(FiguraMod.FIGURA_FONT)))
                         .formatted(entry.getValue().expanded ? Formatting.GRAY : Formatting.DARK_GRAY)
                         .append(text);
@@ -183,11 +186,11 @@ public class PlayerListWidget extends CustomListWidget<PlayerListEntry, PlayerLi
             PlayerListEntry entry = (PlayerListEntry) getEntryObject();
             MutableText name;
             if (entry.getProfile().getId().compareTo(MinecraftClient.getInstance().player.getUuid()) == 0)
-                name = new LiteralText("  [").styled(FiguraMod.ACCENT_COLOR).append(new TranslatableText("figura.trust.local")).append("] " + entry.getProfile().getName());
+                name = Text.literal("  [").styled(FiguraMod.ACCENT_COLOR).append(MutableText.of(new TranslatableTextContent("figura.trust.local"))).append("] " + entry.getProfile().getName());
             else
-                name = new LiteralText("  " + entry.getProfile().getName());
+                name = Text.literal("  " + entry.getProfile().getName());
 
-            Text badges = NamePlateAPI.getBadges(AvatarDataManager.getDataForPlayer(entry.getProfile().getId()));
+            Text badges = NamePlateCustomization.getBadges(AvatarDataManager.getDataForPlayer(entry.getProfile().getId()));
             if (badges != null) name.append(badges);
             return name;
         }
