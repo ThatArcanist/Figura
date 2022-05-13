@@ -200,7 +200,7 @@ public class FiguraNetworkManager implements IFiguraNetwork {
             ClientConnection connection = ClientConnection.connect(inetAddress, true);
             connection.setPacketListener(new ClientLoginNetworkHandler(connection, MinecraftClient.getInstance(), null, (text) -> FiguraMod.LOGGER.info(text.toString())));
             connection.send(new HandshakeC2SPacket(address, 25565, NetworkState.LOGIN));
-            connection.send(new LoginHelloC2SPacket(MinecraftClient.getInstance().getSession().getProfile()));
+            connection.send(new LoginHelloC2SPacket(MinecraftClient.getInstance().getSession().getUsername(), MinecraftClient.getInstance().getProfileKeys().getPublicKeyData()));
 
             while (connection.isOpen())
                 Thread.sleep(1);

@@ -124,7 +124,7 @@ public class FiguraShader extends Shader {
         //Generate json string from provided info
         StringBuilder json = new StringBuilder("{\"vertex\":\"" + name + "\",\"fragment\":\"" + name + "\",\"attributes\": [");
         //Attributes
-        ImmutableList<String> attributes = vertexFormat.getShaderAttributes();
+        ImmutableList<String> attributes = vertexFormat.getAttributeNames();
         for (String attribute : attributes) {
             if (!(attribute.equals("Padding")))
                 json.append("\"").append(attribute).append("\",");

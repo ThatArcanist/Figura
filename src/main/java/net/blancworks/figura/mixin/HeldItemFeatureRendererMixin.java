@@ -30,11 +30,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HeldItemFeatureRenderer.class)
 public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends EntityModel<T> & ModelWithArms> extends FeatureRenderer<T, M> {
 
+    @Shadow @Final private HeldItemRenderer heldItemRenderer;
+
     public HeldItemFeatureRendererMixin(FeatureRendererContext<T, M> context) {
         super(context);
     }
-
-    @Shadow @Final private HeldItemRenderer field_38901;
 
     public VanillaModelPartCustomization figura$customization;
     private int figura$pushedMatrixCount = 0;
@@ -118,7 +118,7 @@ public class HeldItemFeatureRendererMixin<T extends LivingEntity, M extends Enti
             MatrixStackAccess access = (MatrixStackAccess) freshStack;
             access.pushEntry(modified);
             boolean bl = arm == Arm.LEFT;
-            this.field_38901.renderItem(entity, stack, transformationMode, bl, freshStack, vertexConsumers, light);
+            this.heldItemRenderer.renderItem(entity, stack, transformationMode, bl, freshStack, vertexConsumers, light);
         }
     }
 

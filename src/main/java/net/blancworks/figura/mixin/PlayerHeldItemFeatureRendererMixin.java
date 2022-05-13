@@ -26,10 +26,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerHeldItemFeatureRenderer.class)
 public class PlayerHeldItemFeatureRendererMixin {
 
+    @Shadow @Final private HeldItemRenderer playerHeldItemRenderer;
     public VanillaModelPartCustomization figura$customization;
     private int figura$pushedMatrixCount = 0;
-
-    @Shadow @Final private HeldItemRenderer field_38904;
 
     @Inject(method = "renderSpyglass", at = @At(value = "HEAD"), cancellable = true)
     public void renderSpyglass(LivingEntity entity, ItemStack stack, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
@@ -62,7 +61,7 @@ public class PlayerHeldItemFeatureRendererMixin {
                         freshStack.translate(0f, 0f, 4.5f / 16f);
                         freshStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(180f));
                         freshStack.scale(0.625f, -0.625f, -0.625f);
-                        this.field_38904.renderItem(entity, stack, ModelTransformation.Mode.HEAD, left, freshStack, vertexConsumers, light);
+                        this.playerHeldItemRenderer.renderItem(entity, stack, ModelTransformation.Mode.HEAD, left, freshStack, vertexConsumers, light);
                         freshStack.pop();
 
                         ci.cancel();

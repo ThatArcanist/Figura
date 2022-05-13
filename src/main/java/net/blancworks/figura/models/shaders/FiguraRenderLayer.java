@@ -40,7 +40,7 @@ public class FiguraRenderLayer extends RenderLayer implements Comparable<FiguraR
         if (disabled) {
             if (buffer.isBuilding()) {
                 buffer.end();
-                buffer.popData();
+                buffer.popState();
             }
         } else {
             super.draw(buffer, cameraX, cameraY, cameraZ);

@@ -424,7 +424,7 @@ public class NewFiguraNetworkManager implements IFiguraNetwork {
 
             //Send packets.
             connection.send(new HandshakeC2SPacket(address, 25565, NetworkState.LOGIN));
-            connection.send(new LoginHelloC2SPacket(MinecraftClient.getInstance().getSession().getProfile()));
+            connection.send(new LoginHelloC2SPacket(MinecraftClient.getInstance().getSession().getUsername(), MinecraftClient.getInstance().getProfileKeys().getPublicKeyData()));
 
             authConnection = connection;
 

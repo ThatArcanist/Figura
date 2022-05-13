@@ -102,7 +102,7 @@ public class InGameHudMixin implements InGameHudAccess {
         }
     }
 
-    @ModifyArgs(method = "addChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/ClientChatListener;onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V"))
+    @ModifyArgs(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/ClientChatListener;onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Lnet/minecraft/network/MessageSender;)V"))
     private void onChatMessage(Args args) {
         if (this.client.player == null || !(boolean) Config.CHAT_MODIFICATIONS.value)
             return;
