@@ -19,7 +19,7 @@ Figura is specifically built to allow creators as much creative freedom as possi
 Notable features for the mod include
 
 **Figura is Client-Side Only**
-  - Figura is indented to be a fully client-side mod. User Avatars are retrieved from and uploaded to a server run by the mod's creator, Zandra. This means a Minecraft server does not need the mod installed for users to see your avatar.
+  - Figura is indented to be a fully client-side mod. User Avatars are retrieved from and uploaded to a server run by the Moonlight development team. This means a Minecraft server does not need the mod installed for users to see your avatar.
   - Other users **are** required to have the mod installed to see your avatar, and you must have it installed to see theirs. It's physically impossible to change this, so DO NOT ask for it.
 
 Creative Freedom
