@@ -24,7 +24,7 @@
 
   "figura.gui.trustmenu.title": "Figura権限メニュー",
   "figura.gui.config.title": "Figura設定メニュ",
-  "figura.gui.menu.title": "Figurメニュー",
+  "figura.gui.menu.title": "Figuraメニュー",
   "figura.gui.keybinds.title": "Figuraスクリプトキー設定メニュー",
   "figura.gui.sounds.title": "Figuraカスタムサウンド試聴メニュー",
 
@@ -32,7 +32,7 @@
   "figura.gui.panic.warning": "Figuraの使用が制限されています！アバター描画がオフになりました！*パニック*",
 
   "figura.gui.newver.tooltip": "新しいFiguraのバージョンを検知しました",
-  "figura.gui.newver.tooltip2": "Discrodサーバーでアップデートを確認してください！",
+  "figura.gui.newver.tooltip2": "Discordサーバーでアップデートを確認してください！",
 
   "figura.gui.button.cache": "アバターをキャッシュ",
   "figura.gui.button.cache.done": "アバターをキャッシュしました！",
