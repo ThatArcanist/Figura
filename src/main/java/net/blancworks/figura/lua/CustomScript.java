@@ -242,7 +242,7 @@ public class CustomScript extends FiguraAsset {
                     boolean logOthers = (boolean) Config.LOG_OTHERS_SCRIPT.value;
                     if (data != null && (data == AvatarDataManager.localPlayer || logOthers)) {
                         //prefix
-                        MutableText message = LOG_PREFIX.shallowCopy();
+                        MutableText message = LOG_PREFIX.copy();
 
                         //name
                         if (logOthers) message.append(data.name.copy().formatted(Formatting.DARK_RED, Formatting.BOLD)).append(" ");
@@ -411,7 +411,7 @@ public class CustomScript extends FiguraAsset {
             public LuaValue call(LuaValue arg, LuaValue arg2) {
                 try {
                     if (avatarData == AvatarDataManager.localPlayer || (boolean) Config.LOG_OTHERS_SCRIPT.value) {
-                        MutableText message = LOG_PREFIX.shallowCopy();
+                        MutableText message = LOG_PREFIX.copy();
                         if ((boolean) Config.LOG_OTHERS_SCRIPT.value) message.append(avatarData.name.copy()).append(" ");
                         message.append(Text.literal(">> ").styled(LUA_COLOR));
 
@@ -453,7 +453,7 @@ public class CustomScript extends FiguraAsset {
                     boolean deep = arg2.isnil() || arg2.checkboolean();
 
                     if (avatarData == AvatarDataManager.localPlayer || (boolean) Config.LOG_OTHERS_SCRIPT.value) {
-                        MutableText message = LOG_PREFIX.shallowCopy();
+                        MutableText message = LOG_PREFIX.copy();
                         if ((boolean) Config.LOG_OTHERS_SCRIPT.value) message.append(avatarData.name.copy()).append(" ");
                         message.append(Text.literal(">> ").styled(LUA_COLOR));
                         message.append(tableToText(table, deep, LUA_COLOR, FiguraMod.ACCENT_COLOR, 1, ""));
@@ -780,7 +780,7 @@ public class CustomScript extends FiguraAsset {
         String[] messageParts = msg.split("\n");
 
         //prefix
-        MutableText message = LOG_PREFIX.shallowCopy();
+        MutableText message = LOG_PREFIX.copy();
 
         //name
         if (logOthers) message.append(avatarData.name.copy()).append(" ");
@@ -869,7 +869,7 @@ public class CustomScript extends FiguraAsset {
         else
             arg = Text.literal(p.args.toString()).styled(FiguraMod.ACCENT_COLOR);
 
-        MutableText message = PING_PREFIX.shallowCopy();
+        MutableText message = PING_PREFIX.copy();
         message.append(pingOwner).append(" ");
         message.append(Text.literal(">> ").styled(PING_COLOR));
 

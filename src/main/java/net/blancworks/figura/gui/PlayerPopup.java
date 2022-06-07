@@ -150,7 +150,7 @@ public class PlayerPopup extends DrawableHelper {
         }
 
         //playername
-        MutableText name = data.name.shallowCopy().formatted(Formatting.BLACK);
+        MutableText name = data.name.copy().formatted(Formatting.BLACK);
         Text badges = NamePlateCustomization.getBadges(data);
         if (badges != null) name.append(badges);
 

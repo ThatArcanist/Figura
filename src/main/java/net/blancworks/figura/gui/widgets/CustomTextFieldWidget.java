@@ -20,7 +20,7 @@ public class CustomTextFieldWidget extends TextFieldWidget {
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.renderButton(matrices, mouseX, mouseY, delta);
         if (this.getText().isEmpty() && !this.isFocused()) {
-            this.textRenderer.drawWithShadow(matrices, this.getMessage().shallowCopy().formatted(Formatting.DARK_GRAY), this.x + 4, this.y + (this.height - 8) / 2, 0xFFFFFF);
+            this.textRenderer.drawWithShadow(matrices, this.getMessage().copy().formatted(Formatting.DARK_GRAY), this.x + 4, this.y + (this.height - 8) / 2f, 0xFFFFFF);
         }
     }
 }

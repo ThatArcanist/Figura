@@ -32,7 +32,7 @@ public class TextUtils {
             for (int i = 0; i < lines.length; i++) {
                 //if it is not the first iteration, add to return list and reset the line variable
                 if (i != 0) {
-                    textList.add(currentText.shallowCopy());
+                    textList.add(currentText.copy());
                     currentText = Text.empty();
                 }
 
@@ -42,7 +42,7 @@ public class TextUtils {
 
             //if the text ends with the split pattern, add to return list and reset the line variable
             if (entryString.matches(".*" + regex + "$")) {
-                textList.add(currentText.shallowCopy());
+                textList.add(currentText.copy());
                 currentText = Text.empty();
             }
         }

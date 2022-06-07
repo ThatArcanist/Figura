@@ -24,7 +24,7 @@ public class FiguraToast implements Toast {
 
     public FiguraToast(Text title, Text message) {
         this.cheese = (boolean) Config.EASTER_EGGS.value && (FiguraMod.IS_CHEESE || Math.random() < 0.0001);
-        this.title = title.shallowCopy().fillStyle(Style.EMPTY.withColor(cheese ? 0xF8C53A : 0x55FFFF));
+        this.title = title.copy().fillStyle(Style.EMPTY.withColor(cheese ? 0xF8C53A : 0x55FFFF));
         this.message = message;
     }
 
