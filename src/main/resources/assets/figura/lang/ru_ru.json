@@ -197,6 +197,9 @@
   "figura.config.pings_log_location": "Отладка уведомлений",
   "figura.config.pings_log_location.tooltip": "Место вывода отладочных записей уведомлений",
 
+  "figura.config.backend_path": "IP сервера Figura",
+  "figura.config.backend_path.tooltip": "IP, используемый для подключения к серверам Figura (всё, что после \"https://\")",
+
 
   "figura.toast.upload.success.title": "Персонаж загружен!",
   "figura.toast.upload.error.title": "Не удалось загрузить персонажей!",
