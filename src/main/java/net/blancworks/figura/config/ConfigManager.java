@@ -112,7 +112,11 @@ public final class ConfigManager {
                     new TranslatableText(path + "3"),
                     new TranslatableText(path + "4")
             );
-        }};
+        }},
+        BACKEND_PATH("https://figuranew.blancworks.org", InputType.ANY),
+        VERIFY_SSL(false),
+        BACKEND_AUTH_ADDRESS("figuranew.blancworks.org", InputType.ANY),
+        BACKEND_AUTH_PORT(25565, InputType.INT);
 
         //config data
         public Object value;
